@@ -42,19 +42,11 @@ def resolve(message: str, history: list[dict[str, str]] | None = None) -> Reply:
     message = message.strip()
     if not message or len(message) > 2000:
         return Reply(message="Please send a message of 1–2,000 characters.", status="Needs input")
-    provider = os.getenv("INFERENCE_PROVIDER", "gemini").strip().lower()
-    if provider == "almabetter":
-        # The instructor will supply the API contract and connect this branch later.
-        # Do not send requests to a guessed endpoint or silently use a personal key.
+    gemini_key = os.getenv("GEMINI_API_KEY", "").strip()
+    if not gemini_key:
+        # Default: AlmaBetter inference. Connect once its API contract is provided.
         return Reply(message="AlmaBetter inference is not connected yet. "
-                     "For now, choose Gemini in Step 2 and add your own key, "
-                     "or wait for the instructor's API setup.", status="Setup needed")
-    if provider != "gemini":
-        return Reply(message="Set INFERENCE_PROVIDER to gemini or almabetter in .env.",
-                     status="Setup needed")
-    if not os.getenv("GEMINI_API_KEY"):
-        return Reply(message="The support assistant is not configured yet. "
-                     "Add your own Gemini API key to the local .env file. Follow Step 2 with your coding guide.", status="Setup needed")
+                     "Please wait for the instructor's API setup.", status="Setup needed")
     # Send the last six exchanges; never treat old replies as fresh order facts.
     history = (history or [])[-12:]
     context = {"history": history, "customer_request": message}
@@ -68,7 +60,7 @@ def resolve(message: str, history: list[dict[str, str]] | None = None) -> Reply:
                 break
     policy = POLICY_PATH.read_text(encoding="utf-8")
     try:
-        with genai.Client(api_key=os.environ["GEMINI_API_KEY"],
+        with genai.Client(api_key=gemini_key,
                           http_options=types.HttpOptions(timeout=25000)) as client:
             model = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
             # 1. Turn the customer message into structured data.

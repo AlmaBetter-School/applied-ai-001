@@ -12,7 +12,6 @@ st.set_page_config(page_title="AI Support Resolution Agent", page_icon="📦")
 st.title("AI Support Resolution Agent")
 st.write("Ask about your delivery and find your next step.")
 st.caption("Workshop Orders API · Historical records, not live tracking")
-st.caption("Step 2: choose AlmaBetter inference (coming later) or your own Gemini key.")
 st.caption("Example order ID: ee64d42b8cf066f35eac1cf57de1aa85")
 with st.expander("How it works"):
     st.write("Your message → Understand → Check Orders API → Apply policy → Respond")

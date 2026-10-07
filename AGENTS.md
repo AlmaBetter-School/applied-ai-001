@@ -12,10 +12,11 @@ its database and server setup are not needed to run this application.
 
 Keep the starter small: no RAG, database, authentication, agent framework or Azure
 infrastructure. Do not implement the Step 6 priority exercise before the student
-reaches it. During Step 2, explain the two inference choices in `.env.example`: AlmaBetter
-(workshop placeholder until the instructor connects it) or personal Gemini. For
-Gemini, guide the student to create and privately add their own key. Never claim
-the placeholder works or silently switch providers. Then guide local startup.
+reaches it. During Step 2, guide local setup with AlmaBetter inference as the default.
+Do not ask students to choose a provider or create a Gemini key during onboarding.
+A non-empty personal `GEMINI_API_KEY` automatically overrides the default, if a
+student adds one for independent use. AlmaBetter integration is currently pending;
+never claim the placeholder works or mark failed requests complete.
 The Orders API endpoint is fixed in `tools.py`; students
 do not configure it or run a local Orders server. Never ask
 for the key in chat or read/print its value. Do not persist registration information

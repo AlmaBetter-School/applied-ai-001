@@ -5,7 +5,7 @@ Project ID: `applied-ai-001` · 8 steps
 ## Workshop Orders API
 
 The app already connects to [the hosted Orders dataset](http://4.186.26.27:8787/ecommerce?dataset=orders).
-The exact URL is a constant in `tools.py`; students select inference in `.env`, independently of this order-data source. Do not ask them to configure an Orders URL, start an Orders server, or
+The exact URL is a constant in `tools.py`; AlmaBetter inference is the default, separately from this order-data source. Do not ask them to configure an Orders URL, start an Orders server, or
 change API code during setup. One Streamlit process is enough.
 
 `get_order_status` requests the dataset, finds the matching `order_id`, and maps
@@ -125,8 +125,8 @@ student's explanation already demonstrates that concept.
 | Moment | Question and choices |
 |---|---|
 | Step 1, partial/wrong answer | Where can we find what happened to this parcel? **A.** The shop's order record. **B.** The usual delivery estimate for all parcels. **C.** I'm not sure. |
-| Step 2, key | If someone uses your Gemini key, whose usage allowance could they use? **A.** Every student's. **B.** Yours. **C.** I'm not sure. |
-| Step 2, key privacy | Where should your key go? **A.** In the class chat. **B.** In the shared project code. **C.** In your private local `.env` file. |
+| Optional personal Gemini setup only, key | If someone uses your Gemini key, whose usage allowance could they use? **A.** Every student's. **B.** Yours. **C.** I'm not sure. |
+| Optional personal Gemini setup only, privacy | Where should your key go? **A.** In the class chat. **B.** In the shared project code. **C.** In your private local `.env` file. |
 | Step 2, running | Where did the order card's details come from? **A.** The order records the app looked up. **B.** Gemini's general knowledge of deliveries. **C.** I'm not sure. |
 | Step 3, records and rules | The record says an order is delayed. Where do we check what help the shop allows? **A.** The order number. **B.** The shop's support rules. **C.** I'm not sure. |
 | Step 4, highlighted code | Ask “What job does this highlighted part do?” Give 2–3 actual responsibilities, e.g. **A.** Remember earlier messages. **B.** Look up an order. **C.** Show the order card. Tailor the choices to the section just shown. |
@@ -278,7 +278,7 @@ Now let's see this in action by running the project on your own computer. This i
 called running it locally: you'll open the app in your browser and try asking it
 about an order. We aren't publishing a website yet.
 
-We'll go one small step at a time: prepare the project, choose how it gets AI responses,
+We'll go one small step at a time: prepare the project, explain its AI connection,
 and start the app. I'll explain each action as we do it.
 
 First, are you using Windows, macOS, or Linux?”
@@ -287,16 +287,16 @@ If the student's operating system is already known, don't ask again. Instead,
 name the known system and begin the first setup action in Step 2A. Do not repeat
 the Step 2 introduction after giving this transition.
 
-## Step 2 — Choose inference and run locally
+## Step 2 — Run locally with AlmaBetter inference
 
 If resuming directly at this step, introduce the goal: “Let's put you in the customer's seat. We'll run the support
 app on your computer, ask about two orders, and see what it tells us. We'll set up
 one thing at a time, so you can see what each part is for.”
 
 Guide these checkpoints one at a time during the session. Wait for each result.
-Explain the inference choice below before asking for any key. Do not explain the
-full architecture yet. AlmaBetter is currently a placeholder; Gemini works with a
-student's personal key. Do not mark setup complete for an unavailable provider.
+Use AlmaBetter inference by default; do not ask students to choose a provider or
+create a personal key. Explain the AI connection simply, without the full architecture.
+AlmaBetter integration is currently pending, so do not claim a successful AI run yet.
 Before commands, orient beginners: the IDE is the application where they open and
 edit this project's files; its terminal is a panel where they type commands to run
 programs. Show how to open it and confirm which folder it is in. Explain a command
@@ -322,67 +322,49 @@ On Windows PowerShell, use `py -3.13` instead of `python3` and
 `.\.venv\Scripts\python.exe` instead of `.venv/bin/python` in all commands.
 Continue after installation succeeds.
 
-### B. Choose how the app gets AI replies
+### B. Understand the app's AI connection
 
-Explain: “Our app needs help understanding the customer's message. It sends that
-request to an AI service and receives a result. Using an AI model this way is called
-inference. This is different from looking up the order: the Orders API supplies
-facts, while the inference service helps understand and respond.”
+Explain: “Our app sends the customer's message to an AI service to help understand
+it and prepare a reply. This is called inference. AlmaBetter will provide that
+connection for the workshop, so you won't need to set up your own AI account.
+The Orders API has a different job: it provides the facts about the order.”
 
-Explain the two options before presenting choices:
+Do not present a provider menu. The default is AlmaBetter. The instructor will
+supply its endpoint and request format and connect it in code. Until then this is
+a placeholder, even if a URL is entered. Explain the limitation when it affects
+setup; do not claim it is working or turn personal-key creation into a requirement.
 
-- **AlmaBetter inference:** intended for the workshop, using an instructor-provided
-  service. It is a placeholder for now. Its URL, authentication and message format
-  will be supplied later, then connected in code. Entering a URL alone will not
-  make it work. Don't invent credentials, copy the Orders API URL here, or promise
-  this option is available yet.
-- **Personal Gemini key:** available now, and useful if students want to run the
-  project later themselves. They use their own Google account and usage allowance.
-  Never require a personal key if they prefer to wait for the workshop service.
+Check understanding with simple choices if needed: “Which service provides the
+order facts? **A.** The Orders API. **B.** The AI service's general knowledge.”
 
-Ask: “How would you like to continue? **A.** Use my own Gemini key and run it now.
-**B.** Wait for the instructor to connect AlmaBetter inference.” If they choose B,
-explain the placeholder fields, stop dependent setup, and do not record Step 02
-as complete. They may review code without claiming the app has run successfully.
+### C. Prepare `.env`
 
-For choice A, explain an API key as a private credential that lets Gemini associate
-requests with their account. Guide them to [Google AI Studio](https://aistudio.google.com/apikey).
-They sign in, handle account agreements, and create/select a key in their own
-project. Use [Google's guide](https://ai.google.dev/gemini-api/docs/api-key) if needed.
-Explain usage quotas and possible charges without promising free access or enabling
-billing for them. Ask only whether the key is ready, never to see it.
-
-### C. Save the choice in `.env`
-
-Explain: “The Python code can stay the same while each person uses their own
-settings. `.env` is the local file where we save those settings.” Copy `.env.example`
-to `.env` only if it doesn't exist; preserve existing values otherwise.
-
-Show only the selected option. For a working Gemini run today:
+Explain: “`.env` holds local settings without changing the shared Python code.”
+Copy `.env.example` to `.env` only if it does not exist; preserve existing settings.
+The template contains:
 
 ```dotenv
-INFERENCE_PROVIDER=gemini
-GEMINI_API_KEY=your_own_key_here
-```
-
-The student personally pastes their key in the editor. The AlmaBetter placeholder
-in the template is:
-
-```dotenv
-INFERENCE_PROVIDER=almabetter
 ALMABETTER_API_URL=
+GEMINI_API_KEY=
 ```
 
-Explain that these are alternatives, not two inference services used together.
-AlmaBetter is the template's workshop choice but stays unavailable until integrated.
-The application reports setup needed even if someone fills in its placeholder URL;
-it does not quietly use a Gemini key instead. The Orders API URL is already fixed
-in `tools.py` and does not belong in either inference setting.
+The AlmaBetter endpoint is instructor-provided, not something the student must find.
+There is no `INFERENCE_PROVIDER` setting or selection step. Leave `GEMINI_API_KEY`
+blank for the default workshop route. A non-empty key automatically uses Gemini;
+blank or whitespace-only keys use AlmaBetter. Restart the app after editing `.env`.
+Exported environment settings take precedence over the file.
+
+Only if a student asks about independent use later, explain: “You can add your own
+Gemini key here and the app will use it automatically.” At that point, guide them
+to [Google AI Studio](https://aistudio.google.com/apikey), explain personal usage
+limits/possible charges, and let them sign in and paste the key privately. Do not
+proactively offer this as an onboarding choice or require it to continue teaching.
+An invalid personal key produces an error; it does not silently switch to AlmaBetter.
 
 Never read, print, log or commit keys. Check `.env` is ignored with
-`git check-ignore .env`; ask whether the student saved it. Use the existing privacy
-question if that understanding has not already been demonstrated. Restart Streamlit
-when changing providers or keys; exported settings take precedence over `.env`.
+`git check-ignore .env`. The fixed Orders API URL in `tools.py` is not the inference
+endpoint. If AlmaBetter remains unavailable, continue setup explanation as useful,
+but pause live request verification and do not mark Step 02 complete.
 
 ### D. Start the app
 
@@ -415,17 +397,18 @@ Check that the same order is used. Then try a new explicit order ID and confirm
 the lookup switches. Check replies and order cards, not just a loaded page.
 Ask: “Where did the current order information come from?”
 
-Troubleshoot without exposing credentials: setup error → selected provider and saved `.env` (AlmaBetter is not integrated yet);
+Troubleshoot without exposing credentials: setup error → instructor-provided AlmaBetter integration (currently pending);
 assistant error on Gemini → connectivity/key/model/quota in AI Studio; order error → internet access
 and availability of the hosted endpoint in `tools.py`. Do not ask students to
 replace the endpoint or run a local server. Identify any port conflict before stopping
 services. Restart Streamlit after `.env` changes. An exported variable overrides
 `.env`; clear an outdated variable without printing it if necessary.
 
-Complete when an available inference option is privately configured, the local app
+Complete when the inference connection works, the local app
 runs and reaches the Orders API, two real AI-backed requests and a follow-up work,
-and the student explains input → output, the inference choice and key privacy.
-Currently this requires the Gemini option; a placeholder response is not success.
+and the student explains input → output and the difference between AI and order
+data. A placeholder response is not success. Do not require a personal Gemini key
+as a learning criterion.
 Record Step `02` once for all checkpoints; do not record A–E separately.
 
 ## Step 3 — Understand the architecture
@@ -682,8 +665,8 @@ boundary; don't explain the entire Azure setup screen at once.
    from which Azure can download the application package. Check: “The image is now
    stored in the registry. Is our support website running yet?”
 2. **Run and connect:** Container Apps downloads the image and runs a container.
-   The instructor uses the currently working Gemini option, with
-   `INFERENCE_PROVIDER=gemini` and `GEMINI_API_KEY` supplied as a runtime secret.
+   The workshop uses AlmaBetter inference by default once connected. A personal
+   `GEMINI_API_KEY`, if supplied as a runtime secret, automatically overrides it.
    AlmaBetter cannot be demonstrated as working until its adapter is implemented. The Orders
    endpoint is already in the code, and Gemini's model has a default. The running
    app must reach both services over the network. No student key is baked into the

@@ -301,23 +301,24 @@ def test_ui_followup_and_reset(orders_api, model):
     assert json.loads(model.call_args.kwargs["contents"])["history"] == []
 
 
-@pytest.mark.parametrize("url", ["", "https://placeholder.example/inference"])
-def test_almabetter_placeholder_never_calls_gemini(monkeypatch, model, url):
-    monkeypatch.setenv("INFERENCE_PROVIDER", "almabetter")
-    monkeypatch.setenv("ALMABETTER_API_URL", url)
+@pytest.mark.parametrize("key", [None, "", "   "])
+def test_default_almabetter_placeholder(monkeypatch, model, key):
+    if key is None:
+        monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    else:
+        monkeypatch.setenv("GEMINI_API_KEY", key)
+    monkeypatch.setenv("ALMABETTER_API_URL", "https://placeholder.example/inference")
     reply = agent.resolve("Where is order " + "a" * 32)
     assert reply.status == "Setup needed"
     assert "not connected yet" in reply.message
     model.assert_not_called()
 
 
-def test_invalid_inference_provider(monkeypatch, model):
-    monkeypatch.setenv("INFERENCE_PROVIDER", "unknown")
-    assert agent.resolve("Where is my order?").status == "Setup needed"
-    model.assert_not_called()
-
-
-def test_explicit_gemini_provider(orders_api, model, monkeypatch):
-    monkeypatch.setenv("INFERENCE_PROVIDER", "gemini")
+def test_gemini_key_automatically_overrides_default(orders_api, model, monkeypatch):
+    monkeypatch.setenv("GEMINI_API_KEY", "  personal-test-key  ")
+    monkeypatch.setenv("ALMABETTER_API_URL", "https://placeholder.example/inference")
+    # Legacy selector settings no longer affect routing.
+    monkeypatch.setenv("INFERENCE_PROVIDER", "almabetter")
     model_answers(model)
     assert agent.resolve("Where is order " + "a" * 32).status == "Order checked"
+    assert model.call_count == 2
