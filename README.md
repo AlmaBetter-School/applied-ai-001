@@ -77,7 +77,10 @@ Try “Where is order ee64d42b8cf066f35eac1cf57de1aa85?”
 The app reads historical order records from the hosted workshop API and makes real Gemini
 calls using your key. The model selects a tone and next step; Python inserts verified
 order facts into the answer. It cannot issue refunds, change orders, or create tickets.
-Include one order number per message; displayed chat history is not sent to Gemini.
+Ask follow-up questions without repeating the order ID. The latest 12 messages
+(six exchanges) are sent to Gemini with your new message. Order facts are fetched
+again each time. History stays in the browser session and resets with “Start a new
+conversation” or a new session; it is not saved to disk.
 
 ## Five files to explore
 

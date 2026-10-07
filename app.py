@@ -16,14 +16,14 @@ st.caption("Example order ID: ee64d42b8cf066f35eac1cf57de1aa85")
 with st.expander("How it works"):
     st.write("Your message → Understand → Check Orders API → Apply policy → Respond")
 
-# Session state keeps the conversation between Streamlit reruns.
+# Keep chat history in this browser session and send it with each new request.
 if "messages" not in st.session_state:
     st.session_state.messages = []
     st.session_state.reply = None
 
 if message := st.chat_input("Ask about your order…", max_chars=2000):
     with st.spinner("Checking your request…"):
-        reply = resolve(message)
+        reply = resolve(message, st.session_state.messages)
     st.session_state.messages.extend([
         {"role": "user", "content": message},
         {"role": "assistant", "content": reply.message},
@@ -46,7 +46,7 @@ if reply and reply.order:
         st.text(reply.order.latest_update)
         st.caption("Source: workshop Orders API · Historical delivery record.")
 
-st.caption("Include one order number per message. This app cannot change orders or issue refunds.")
+st.caption("You can ask follow-up questions about your order. This app cannot change orders or issue refunds.")
 if st.session_state.messages and st.button("Start a new conversation"):
     st.session_state.messages = []
     st.session_state.reply = None

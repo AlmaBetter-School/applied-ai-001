@@ -235,3 +235,67 @@ def test_duplicate_ids_rejected(monkeypatch):
 def test_uppercase_order_id(orders_api, model):
     model_answers(model, "A" * 32)
     assert agent.resolve("Where is order " + "A" * 32).order.order_id == "a" * 32
+
+
+def test_followup_sends_history_and_refetches(orders_api, model, monkeypatch):
+    history = [{"role": "user", "content": "Where is order " + "a" * 32},
+               {"role": "assistant", "content": "Previously recorded as delivered."}]
+    lookup = MagicMock(wraps=tools.get_order_status)
+    monkeypatch.setattr(agent, "get_order_status", lookup)
+    model_answers(model, "a" * 32)
+    reply = agent.resolve("What can I do about it?", history)
+    assert reply.order.status == "shipped"
+    lookup.assert_called_once_with("a" * 32)
+    for call in model.call_args_list:
+        context = json.loads(call.kwargs["contents"])
+        assert context["history"] == history
+        assert context["customer_request"] == "What can I do about it?"
+    assert len(history) == 2  # The caller's history is not modified.
+
+
+@pytest.mark.parametrize("new_message,chosen_id,accepted", [
+    ("Where is order " + "b" * 32, "b" * 32, True),
+    ("Where is order " + "b" * 32, "a" * 32, False),
+    ("Compare " + "a" * 32 + " and " + "b" * 32, "a" * 32, False),
+])
+def test_current_order_precedence(orders_api, model, new_message, chosen_id, accepted):
+    model_answers(model, chosen_id)
+    reply = agent.resolve(new_message, [{"role": "user", "content": "Order " + "a" * 32}])
+    assert (reply.status == "Order checked") is accepted
+    if not accepted:
+        assert reply.status == "Needs input"
+
+
+def test_assistant_cannot_introduce_order_id(model):
+    model_answers(model, "a" * 32)
+    reply = agent.resolve("What about that order?", [
+        {"role": "assistant", "content": "Order " + "a" * 32}])
+    assert reply.status == "Needs input"
+    assert model.call_count == 1
+
+
+def test_history_limit(model):
+    history = [{"role": "user", "content": "Order " + "a" * 32}]
+    history += [{"role": "user", "content": "Hello"}] * 12
+    model_answers(model, "a" * 32)
+    assert agent.resolve("Where is it?", history).status == "Needs input"
+    sent = json.loads(model.call_args.kwargs["contents"])["history"]
+    assert len(sent) == 12
+    assert all("a" * 32 not in turn["content"] for turn in sent)
+
+
+def test_ui_followup_and_reset(orders_api, model):
+    app = AppTest.from_file(str(Path(__file__).parents[1] / "app.py")).run()
+    model_answers(model, "a" * 32)
+    app.chat_input[0].set_value("Where is order " + "a" * 32).run()
+    model_answers(model, "a" * 32)
+    app.chat_input[0].set_value("What can I do about it?").run()
+    assert not app.exception
+    assert app.session_state["reply"].order.order_id == "a" * 32
+    assert len(json.loads(model.call_args.kwargs["contents"])["history"]) == 2
+    app.button[0].click().run()
+    model_answers(model, "a" * 32)
+    app.chat_input[0].set_value("What about my order?").run()
+    assert not app.exception
+    assert app.session_state["reply"].status == "Needs input"
+    assert json.loads(model.call_args.kwargs["contents"])["history"] == []

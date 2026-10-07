@@ -295,7 +295,9 @@ says and what the order card shows. Do they tell a consistent story?”
 
 Try “Where is order ee64d42b8cf066f35eac1cf57de1aa85?” and
 “Where is order 15bed8e2fec7fdbadb186b57c46c92f2?” Then let the student
-try another request. Check both replies and order cards, not just a loaded page.
+try a follow-up such as “What can I do about it?” without repeating the ID.
+Check that the same order is used. Then try a new explicit order ID and confirm
+the lookup switches. Check replies and order cards, not just a loaded page.
 Ask: “Where did the current order information come from?”
 
 Troubleshoot without exposing credentials: setup error → saved `.env`; assistant
@@ -339,18 +341,43 @@ Before opening files, explain that a `.py` file holds Python instructions and a
 `.md` file holds readable text. A function is a named task the program can call;
 it can receive an input and return a result. Remind students only as needed based
 on their Python familiarity. They are learning responsibilities, not memorising code.
-Open one file at a time and trace the same request:
+Walk through the actual files in the IDE, not just a list of filenames in chat.
+For each chunk:
 
-- `app.py`: where the customer types and sees the order card.
-- `agent.py`: where understanding, order lookup and policy are brought together.
-- `models.py`: the expected shapes of the information passed between these parts.
-- `tools.py`: how `get_order_status` asks the API for facts. Show the fixed endpoint and how dataset fields become order details.
-- `policy.md`: the company's rules for responding to delivery problems.
+1. Read the current file and locate the relevant function or block; resolve its
+   current line numbers rather than assuming numbers from these instructions.
+2. Open the file in the student's editor at that section. If the IDE provides
+   selection/highlighting, select only the small relevant block (usually 5–15 lines).
+   In Codex, use `open_in_codex` with the file's absolute path and starting line.
+   Other IDEs should use their available file-opening/navigation tools.
+3. If selection is unavailable, point to the function and line range and show a
+   short exact excerpt in chat. If opening is unavailable, ask the student to open
+   that location. Never claim a file is open or highlighted without tool support.
+4. Explain its purpose, input and output in plain language. Trace the student's
+   actual example through those lines; define only the syntax needed to follow it.
+5. Ask what they understood about this section's job and wait. On a correct answer,
+   connect to and open the next section. Do not paste or explain the whole file.
 
-Ask: “If the Orders API changes its response format, which file would you inspect
-first?” Then use a UI or policy change as a second example if needed.
-Complete when they explain the main files' responsibilities without needing to
-recite every line. Record Step `04`.
+Use these sections, one at a time:
+
+| File | Section to open/highlight | Explanation focus |
+|---|---|---|
+| `app.py` | Session-state initialization, then the chat-input block | Where earlier messages live and how the current question plus history reach `resolve` |
+| `agent.py` | History/context preparation inside `resolve` | Why “What can I do?” can refer to an order mentioned earlier; the last 12 messages are context |
+| `models.py` | `Understanding` | How the identified intent and order ID become predictable fields |
+| `agent.py` | Order-ID validation and `get_order_status` call | The selected ID must come from the user; order facts are looked up again |
+| `tools.py` | Endpoint constant, then the request/filter/mapping block | How the fixed API supplies one matching order; students don't configure it |
+| `policy.md` | The rule relevant to this example | How company rules constrain the next step |
+| `agent.py` | Resolution request, then the response construction | History supplies context, the API supplies facts, and Python inserts those facts |
+| `app.py` | Message rendering and reset button | How replies appear and how starting a new conversation clears memory |
+
+Use a follow-up such as “What can I do about it?” to connect the first and second
+turns. Explain that chat history is session-only, not a permanent database, and
+that only the recent 12 messages are sent. Don't expose `.env` during the walkthrough.
+Ask the existing file-responsibility question only if this was not already clear:
+“If the Orders API changes its format, which file would you inspect first?”
+Complete when they explain the main files' responsibilities without reciting every
+line. Record Step `04`.
 
 ## Step 5 — Understand AI engineering
 

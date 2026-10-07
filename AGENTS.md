@@ -18,3 +18,8 @@ do not configure it or run a local Orders server. Never ask
 for the key in chat or read/print its value. Do not persist registration information
 or conversations, and never put keys in tracked files.
 Use Python 3.13. Run `python -m pytest -q` after changing application behavior.
+
+During code walkthroughs, open the actual file at the relevant block and highlight
+it if the IDE supports selection. Otherwise show its line range and a short exact
+excerpt. Explain one section, check understanding, then move on; never claim an
+editor action occurred without verifying it.

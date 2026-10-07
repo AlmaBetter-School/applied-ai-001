@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field
 class Understanding(BaseModel):
     model_config = ConfigDict(extra="forbid")
     intent: Literal["order_status", "other"]
-    order_id: str | None = Field(description="One explicitly supplied 32-character hexadecimal order ID, or null.")
+    order_id: str | None = Field(description="One 32-character order ID supplied by the user in this conversation, or null.")
 
 
 class Order(BaseModel):

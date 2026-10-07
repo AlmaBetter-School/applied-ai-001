@@ -14,7 +14,8 @@
   was created, a carrier was contacted, or an order was changed.
 - If the order is missing, ask the customer to check the ID. If the API fails,
   explain that the status cannot currently be verified and invite a retry.
-- Handle one explicitly identified order per request. Ask for an order ID when
+- Handle one order per request. A follow-up may use the latest user-supplied order ID
+  from conversation history; a new explicit ID takes precedence. Ask for an order ID when
   absent or ambiguous. Do not guess an ID or treat dates as order IDs.
 
 - These are historical dataset records, not live tracking. Describe status and
@@ -22,3 +23,6 @@
   an old estimate, or treat a customer's claim as a confirmed delivery fact.
 - The endpoint supplies delivery timestamps, not carrier-update messages. State
   when a customer delivery timestamp is missing; do not invent a latest update.
+
+- Use conversation history for context, never as the source of current order facts.
+  Fetch the selected order again on each request. Ask for clarification if ambiguous.
