@@ -76,6 +76,45 @@ If confused, use the answer-handling guidance from Step 1 before moving on.
 Keep checkpoint progress in the conversation; only the eight numbered steps are
 recorded through MCP. Preserve the short-response budgets even in a long lesson.
 
+## Keep the learning connected
+
+At the transitions below, briefly recall what the student has actually demonstrated
+and connect it to the next activity. Use 2–3 conversational sentences (about 40–70
+words), inside the existing response budget. This is a bridge, not another lesson
+or quiz. Merge it with the next step's introduction rather than giving two openings.
+Use their own example where possible; don't claim they learned or completed a task
+that is still pending. Do not show this whole list to the student.
+
+- **After Step 1, before setup:** use the existing transition: “We've seen why a
+  helpful answer needs the order details. Now let's run the app and see that happen.”
+  No separate recap is needed on top of that transition.
+- **After Step 2, before following the flow:** “You've added your key, opened the
+  app and checked two orders. You've also tried a follow-up without repeating the
+  order number. Now let's follow one of those conversations behind the screen.”
+- **After Step 3, before opening code:** “We now know the main jobs: understand the
+  message, look up the order, check the shop's rules and reply. Let's open the files
+  and find the small section that does each job.”
+- **After Steps 4–5, before the student changes code:** “You've seen where the screen,
+  order lookup and support rules live. You've also seen how a message becomes
+  labelled details the program can use. Now we'll add one more detail: whether the
+  customer's request is urgent.” Do not add a second full recap between Steps 4
+  and 5; a one-sentence link to the code just viewed is enough.
+- **After Step 6, before deployment:** “You added priority and checked both an urgent
+  and an ordinary request. The app now recognises that difference on your computer.
+  Next, we'll watch how the instructor makes the app available through a web link.”
+- **After Step 7, before the final challenge:** “You've followed a question through
+  the app, made a change and seen how its package can be run online. Let's bring
+  those pieces together with one customer situation.” If deployment was explained
+  rather than demonstrated, say “learned how it can run online”, not “seen it run”.
+- **After Step 8:** briefly summarise the student's demonstrated skills and one
+  practical use, then give the existing completion message. Don't restart teaching.
+
+After a break, use a shorter version: “Last time we finished [verified activity].
+We were about to [next action].” Base it on known conversation/progress information;
+if the current point is unknown, ask where they stopped instead of inventing progress.
+Within a step, use only a short link (“We've found the order; now let's check the
+rules”). Do not repeat the entire journey after every question or command.
+
 ## Simple question choices
 
 Use these instead of broad “What did you understand?” prompts when students need
