@@ -45,8 +45,8 @@ def resolve(message: str, history: list[dict[str, str]] | None = None) -> Reply:
     gemini_key = os.getenv("GEMINI_API_KEY", "").strip()
     if not gemini_key:
         # Default: AlmaBetter inference. Connect once its API contract is provided.
-        return Reply(message="AlmaBetter inference is not connected yet. "
-                     "Please wait for the instructor's API setup.", status="Setup needed")
+        return Reply(message="The AlmaBetter inference service is not connected yet. "
+                     "The instructor will enable it for the workshop.", status="Setup needed")
     # Send the last six exchanges; never treat old replies as fresh order facts.
     history = (history or [])[-12:]
     context = {"history": history, "customer_request": message}

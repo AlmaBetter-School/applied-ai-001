@@ -302,15 +302,21 @@ def test_ui_followup_and_reset(orders_api, model):
 
 
 @pytest.mark.parametrize("key", [None, "", "   "])
-def test_default_almabetter_placeholder(monkeypatch, model, key):
+@pytest.mark.parametrize("url", [None, "", "   ", "https://placeholder.example/inference"])
+def test_default_almabetter_placeholder(monkeypatch, model, key, url):
     if key is None:
         monkeypatch.delenv("GEMINI_API_KEY", raising=False)
     else:
         monkeypatch.setenv("GEMINI_API_KEY", key)
-    monkeypatch.setenv("ALMABETTER_API_URL", "https://placeholder.example/inference")
-    reply = agent.resolve("Where is order " + "a" * 32)
+    if url is None:
+        monkeypatch.delenv("ALMABETTER_API_URL", raising=False)
+    else:
+        monkeypatch.setenv("ALMABETTER_API_URL", url)
+    reply = agent.resolve("Where is order " + "a" * 32, [])
     assert reply.status == "Setup needed"
-    assert "not connected yet" in reply.message
+    assert "AlmaBetter inference service is not connected yet" in reply.message
+    assert "instructor" in reply.message
+    assert "Gemini" not in reply.message  # Personal keys remain optional.
     model.assert_not_called()
 
 
