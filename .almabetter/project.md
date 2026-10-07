@@ -2,6 +2,25 @@
 
 Project ID: `applied-ai-001` · 8 steps
 
+## Project rules for the assistant
+
+Keep these as working instructions; do not read them out as a student checklist.
+
+- Use this standalone project folder. The separate MCP service's database and
+  server setup are not needed to run the student app. Do not rebuild the starter.
+- Keep the code small: no added RAG, database, authentication, agent framework,
+  or Azure infrastructure. Leave the Step 6 exercise for the student.
+- Use AlmaBetter inference by default. Do not ask students to choose a provider
+  or create a Gemini key during onboarding. A non-empty `GEMINI_API_KEY`
+  automatically uses Gemini. AlmaBetter integration is still pending; never
+  present the placeholder or a failed request as a working connection.
+- Never ask for a secret key in chat, read or print its value, or put it in tracked
+  files. Do not save registration information or conversations to files or logs.
+- Use Python 3.13. After changing application behavior, run `python -m pytest -q`
+  in the project's virtual environment.
+- Follow Step 4 for opening and explaining real code sections. Never claim an
+  editor action happened without verifying it.
+
 ## Workshop Orders API
 
 The app already connects to [the hosted Orders dataset](http://4.186.26.27:8787/ecommerce?dataset=orders).

@@ -1,29 +1,12 @@
-# AlmaBetter student project
+# Workshop guide entry point
 
-When the user says **"Start project"**, **"Start my AlmaBetter project"**, or asks
-to begin or resume, read `.almabetter/project.md` and `.almabetter/conversation-level.md` first, then
-follow the Start section. Begin onboarding; do not rebuild this project or give
-all eight lessons at once. Use connected AlmaBetter MCP tools and the actual files.
-Never record completion without the student's demonstrated understanding.
+This file tells the AI assistant where to begin. Students do not need to edit it.
 
-This directory is the standalone `applied-ai-001` student project. Open this
-folder as the IDE workspace. The parent MCP service is a separate project;
-its database and server setup are not needed to run this application.
+When the student says **“Start project”** or asks to resume:
 
-Keep the starter small: no RAG, database, authentication, agent framework or Azure
-infrastructure. Do not implement the Step 6 priority exercise before the student
-reaches it. During Step 2, guide local setup with AlmaBetter inference as the default.
-Do not ask students to choose a provider or create a Gemini key during onboarding.
-A non-empty personal `GEMINI_API_KEY` automatically overrides the default, if a
-student adds one for independent use. AlmaBetter integration is currently pending;
-never claim the placeholder works or mark failed requests complete.
-The Orders API endpoint is fixed in `tools.py`; students
-do not configure it or run a local Orders server. Never ask
-for the key in chat or read/print its value. Do not persist registration information
-or conversations, and never put keys in tracked files.
-Use Python 3.13. Run `python -m pytest -q` after changing application behavior.
+1. Read [the workshop guide](.almabetter/project.md) for the steps and project rules.
+2. Read [the teaching style](.almabetter/conversation-level.md) for explanation depth.
+3. Follow the guide's **Start** section, then teach one small activity at a time.
 
-During code walkthroughs, open the actual file at the relevant block and highlight
-it if the IDE supports selection. Otherwise show its line range and a short exact
-excerpt. Explain one section, check understanding, then move on; never claim an
-editor action occurred without verifying it.
+Use the existing project files. Keep explanations simple and check understanding
+before moving on. Follow the linked project rules when changing code, too.

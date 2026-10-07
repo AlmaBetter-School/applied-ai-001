@@ -94,9 +94,15 @@ conversation” or a new session; it is not saved to disk.
 | `tools.py` | How the application looks up an order in the hosted dataset |
 | `policy.md` | How company rules shape the next step |
 
-The remaining files support setup, testing, and deployment. `AGENTS.md` and
-`.almabetter/` give the coding assistant its teaching instructions. You do not need
-to study every file before starting. There is no RAG implementation in this project.
+The remaining files help with setup, testing, and deployment. The guide files
+have simple jobs:
+
+- `AGENTS.md` tells your AI assistant where to start.
+- `.almabetter/project.md` contains the workshop steps.
+- `.almabetter/conversation-level.md` helps the assistant explain at your pace.
+
+You do not need to read or edit these guide files. Say **“Start project”** and
+follow one activity at a time. There is no RAG implementation in this project.
 
 ## Local setup reference
 
