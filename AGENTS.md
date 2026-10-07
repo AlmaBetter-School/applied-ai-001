@@ -1,7 +1,7 @@
 # AlmaBetter student project
 
-When the user says **"Start my AlmaBetter project"** (or asks to begin or resume),
-read `.almabetter/project.md` and `.almabetter/conversation-level.md` first, then
+When the user says **"Start project"**, **"Start my AlmaBetter project"**, or asks
+to begin or resume, read `.almabetter/project.md` and `.almabetter/conversation-level.md` first, then
 follow the Start section. Begin onboarding; do not rebuild this project or give
 all eight lessons at once. Use connected AlmaBetter MCP tools and the actual files.
 Never record completion without the student's demonstrated understanding.
@@ -12,8 +12,11 @@ its database and server setup are not needed to run this application.
 
 Keep the starter small: no RAG, database, authentication, agent framework or Azure
 infrastructure. Do not implement the Step 6 priority exercise before the student
-reaches it. During Step 2, guide each student to create their own Gemini API key,
-add it personally to the ignored local `.env`, and start Streamlit. The Orders API endpoint is fixed in `tools.py`; students
+reaches it. During Step 2, explain the two inference choices in `.env.example`: AlmaBetter
+(workshop placeholder until the instructor connects it) or personal Gemini. For
+Gemini, guide the student to create and privately add their own key. Never claim
+the placeholder works or silently switch providers. Then guide local startup.
+The Orders API endpoint is fixed in `tools.py`; students
 do not configure it or run a local Orders server. Never ask
 for the key in chat or read/print its value. Do not persist registration information
 or conversations, and never put keys in tracked files.

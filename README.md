@@ -43,18 +43,20 @@ The guide adjusts explanation depth to your experience.
 
 ## Start your guided project
 
-Have Python 3.13, your AI coding IDE, and a Google account available. Open this
-project folder and connect the instructor's AlmaBetter MCP service for onboarding
+Have Python 3.13 and your AI coding IDE available. A Google account is needed
+only if you choose personal Gemini access. Open this project folder and connect the instructor's AlmaBetter MCP service for onboarding
 and progress recording. Then tell your coding assistant:
 
-> **Start my AlmaBetter project**
+> **Start project**
 
-The guide will collect your registration and concept familiarity, then begin:
+The guide first opens registration and skill-familiarity forms. After onboarding,
+it starts with the customer-support problem, then guides local setup. Learning
+comes from this cloned folder's `.almabetter/` files, one step at a time:
 
 | Step | Your activity |
 |---|---|
 | 1 | Understand the customer-support problem |
-| 2 | Create your own Gemini API key and run the app locally |
+| 2 | Choose inference, configure it privately, and run the app locally |
 | 3 | Trace how a request moves through the application |
 | 4 | Explore the five core files |
 | 5 | Understand structured output, tools, context, and when RAG is useful |
@@ -62,8 +64,8 @@ The guide will collect your registration and concept familiarity, then begin:
 | 7 | Follow the instructor's Docker and Azure deployment demonstration |
 | 8 | Solve a final support scenario and explain the system |
 
-**You do not need to complete setup alone.** Step 2 guides you through creating
-your own key, saving it locally, and testing the application. Students do not
+**You do not need to complete setup alone.** Step 2 guides you through choosing
+an AI service, saving your settings locally, and testing the application. Students do not
 configure Azure; deployment is an instructor demonstration.
 
 ## What the application does
@@ -105,14 +107,25 @@ python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
 ```
 
-Copy `.env.example` to `.env` only if it does not already exist. Create your own key
-in [Google AI Studio](https://aistudio.google.com/apikey) and personally paste it into
-`GEMINI_API_KEY` in `.env`. Never share the key in chat or commit it to GitHub.
-The app loads `.env` automatically. API quotas and possible charges depend on your
-account and model.
+Copy `.env.example` to `.env` only if it does not already exist. It offers two
+inference choices—the service that helps understand messages and select replies:
 
-The [Orders API](http://4.186.26.27:8787/ecommerce?dataset=orders) is already hosted
-and its URL is fixed in `tools.py`. Students only configure `GEMINI_API_KEY`.
+- **AlmaBetter:** the planned workshop option. `INFERENCE_PROVIDER=almabetter` and
+  `ALMABETTER_API_URL=` are placeholders. The instructor will supply the endpoint
+  and API contract later. Its adapter is not implemented, so it currently returns
+  “Setup needed”, even if a URL is entered. There is no automatic Gemini fallback.
+- **Gemini:** works now and remains available for personal use after the workshop.
+  Set `INFERENCE_PROVIDER=gemini`, create your own key in
+  [Google AI Studio](https://aistudio.google.com/apikey), and privately add it as
+  `GEMINI_API_KEY` in `.env`. Never share the key in chat or commit it. Quotas and
+  possible charges depend on your account.
+
+The guide explains these choices before setup. You may wait for AlmaBetter instead
+of creating a personal key, but local AI requests cannot pass until one option is
+available and configured. The app loads `.env` automatically.
+
+The [Orders API](http://4.186.26.27:8787/ecommerce?dataset=orders) is separate: it
+provides order facts and its URL is already fixed in `tools.py`.
 Start the application with one command:
 
 ```sh
@@ -141,7 +154,9 @@ tracking update or falls back to made-up records. The full dataset remains in th
 lookup process; only the selected order's support fields are sent to Gemini.
 
 Build with `docker build -t applied-ai-001 .`. The image runs Streamlit on port 8501.
-For Azure Container Apps, configure ingress on that port and a Gemini key secret.
+For Azure Container Apps today, configure ingress on that port,
+`INFERENCE_PROVIDER=gemini`, and a Gemini key secret. AlmaBetter deployment awaits
+the instructor-provided API integration.
 The app calls the existing Orders API; no second service or API URL setting is needed.
 
 Run checks from this folder:

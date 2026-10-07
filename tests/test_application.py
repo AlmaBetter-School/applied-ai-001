@@ -299,3 +299,25 @@ def test_ui_followup_and_reset(orders_api, model):
     assert not app.exception
     assert app.session_state["reply"].status == "Needs input"
     assert json.loads(model.call_args.kwargs["contents"])["history"] == []
+
+
+@pytest.mark.parametrize("url", ["", "https://placeholder.example/inference"])
+def test_almabetter_placeholder_never_calls_gemini(monkeypatch, model, url):
+    monkeypatch.setenv("INFERENCE_PROVIDER", "almabetter")
+    monkeypatch.setenv("ALMABETTER_API_URL", url)
+    reply = agent.resolve("Where is order " + "a" * 32)
+    assert reply.status == "Setup needed"
+    assert "not connected yet" in reply.message
+    model.assert_not_called()
+
+
+def test_invalid_inference_provider(monkeypatch, model):
+    monkeypatch.setenv("INFERENCE_PROVIDER", "unknown")
+    assert agent.resolve("Where is my order?").status == "Setup needed"
+    model.assert_not_called()
+
+
+def test_explicit_gemini_provider(orders_api, model, monkeypatch):
+    monkeypatch.setenv("INFERENCE_PROVIDER", "gemini")
+    model_answers(model)
+    assert agent.resolve("Where is order " + "a" * 32).status == "Order checked"

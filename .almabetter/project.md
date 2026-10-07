@@ -5,8 +5,7 @@ Project ID: `applied-ai-001` · 8 steps
 ## Workshop Orders API
 
 The app already connects to [the hosted Orders dataset](http://4.186.26.27:8787/ecommerce?dataset=orders).
-The exact URL is a constant in `tools.py`; students only add `GEMINI_API_KEY` to
-`.env`. Do not ask them to configure an Orders URL, start an Orders server, or
+The exact URL is a constant in `tools.py`; students select inference in `.env`, independently of this order-data source. Do not ask them to configure an Orders URL, start an Orders server, or
 change API code during setup. One Streamlit process is enough.
 
 `get_order_status` requests the dataset, finds the matching `order_id`, and maps
@@ -88,7 +87,7 @@ that is still pending. Do not show this whole list to the student.
 - **After Step 1, before setup:** use the existing transition: “We've seen why a
   helpful answer needs the order details. Now let's run the app and see that happen.”
   No separate recap is needed on top of that transition.
-- **After Step 2, before following the flow:** “You've added your key, opened the
+- **After Step 2, before following the flow:** “You've configured your AI connection, opened the
   app and checked two orders. You've also tried a follow-up without repeating the
   order number. Now let's follow one of those conversations behind the screen.”
 - **After Step 3, before opening code:** “We now know the main jobs: understand the
@@ -153,6 +152,17 @@ exercise for them. For setup, ask only for missing information; operating-system
 choices are Windows / macOS / Linux, and never ask them to share their key.
 
 ## Start
+
+Entry point: the student opens this cloned folder in Antigravity and says
+**“Start project.”** Also accept “Start my AlmaBetter project”. Read this folder's
+`.almabetter/project.md` and `.almabetter/conversation-level.md`; don't use a generic
+course plan or clone the project again.
+
+The sequence is **registration form → skill familiarity form → start_project tool
+→ Step 1 problem story → Step 2 local setup**. The student's “Start project” message
+begins onboarding; it does not mean registration already happened. Never skip the
+forms or begin installation simply because that phrase was used. Reuse a session
+only when its successful onboarding is already known in this conversation.
 
 Inspect the connected AlmaBetter MCP tool schemas.
 
@@ -268,7 +278,7 @@ Now let's see this in action by running the project on your own computer. This i
 called running it locally: you'll open the app in your browser and try asking it
 about an order. We aren't publishing a website yet.
 
-We'll go one small step at a time: prepare the project, add your own Gemini key,
+We'll go one small step at a time: prepare the project, choose how it gets AI responses,
 and start the app. I'll explain each action as we do it.
 
 First, are you using Windows, macOS, or Linux?”
@@ -277,14 +287,16 @@ If the student's operating system is already known, don't ask again. Instead,
 name the known system and begin the first setup action in Step 2A. Do not repeat
 the Step 2 introduction after giving this transition.
 
-## Step 2 — Create your key and run locally
+## Step 2 — Choose inference and run locally
 
 If resuming directly at this step, introduce the goal: “Let's put you in the customer's seat. We'll run the support
 app on your computer, ask about two orders, and see what it tells us. We'll set up
 one thing at a time, so you can see what each part is for.”
 
 Guide these checkpoints one at a time during the session. Wait for each result.
-Every student uses their own Gemini key. Do not explain the full architecture yet.
+Explain the inference choice below before asking for any key. Do not explain the
+full architecture yet. AlmaBetter is currently a placeholder; Gemini works with a
+student's personal key. Do not mark setup complete for an unavailable provider.
 Before commands, orient beginners: the IDE is the application where they open and
 edit this project's files; its terminal is a panel where they type commands to run
 programs. Show how to open it and confirm which folder it is in. Explain a command
@@ -310,43 +322,67 @@ On Windows PowerShell, use `py -3.13` instead of `python3` and
 `.\.venv\Scripts\python.exe` instead of `.venv/bin/python` in all commands.
 Continue after installation succeeds.
 
-### B. Create a personal key
+### B. Choose how the app gets AI replies
 
-Introduce the situation: “The app runs on your laptop, but Gemini runs as an online
-service. It needs a way to know which account is making the request.”
-Explain that an API key is a private credential the app sends with requests to
-Gemini. It lets the service associate usage with their project. Quota means a limit
-on usage. This is separate from the order number used to look up a parcel.
-Then ask: “If someone else used your key, whose project would their usage count
-against?” Wait, then clarify before proceeding.
-Guide the student to [Google AI Studio](https://aistudio.google.com/apikey).
-They sign in and handle account agreements themselves. On API Keys, create a key
-in their own project, or use their personal default key if one was created for them.
-If needed, create/import a project they control. Use
-[Google's guide](https://ai.google.dev/gemini-api/docs/api-key) if screens differ.
-Explain that quotas and possible charges depend on their account/model; do not
-promise free access or require paid billing. For blocked access, involve the instructor.
-Ask only whether the key is ready; never request its value or a screenshot of it.
+Explain: “Our app needs help understanding the customer's message. It sends that
+request to an AI service and receives a result. Using an AI model this way is called
+inference. This is different from looking up the order: the Orders API supplies
+facts, while the inference service helps understand and respond.”
 
-### C. Add it locally
+Explain the two options before presenting choices:
 
-Explain that a setting is a value that can differ without changing the program.
-The `.env` file stores these local settings as `NAME=value` lines.
-Explain: “Your classmates can use the same Python code with their own keys.
-We'll put your personal setting in `.env`, separate from the shared code.”
+- **AlmaBetter inference:** intended for the workshop, using an instructor-provided
+  service. It is a placeholder for now. Its URL, authentication and message format
+  will be supplied later, then connected in code. Entering a URL alone will not
+  make it work. Don't invent credentials, copy the Orders API URL here, or promise
+  this option is available yet.
+- **Personal Gemini key:** available now, and useful if students want to run the
+  project later themselves. They use their own Google account and usage allowance.
+  Never require a personal key if they prefer to wait for the workshop service.
 
-Copy `.env.example` to `.env` only if `.env` does not already exist. Preserve existing
-settings. The student personally pastes their key in the editor:
+Ask: “How would you like to continue? **A.** Use my own Gemini key and run it now.
+**B.** Wait for the instructor to connect AlmaBetter inference.” If they choose B,
+explain the placeholder fields, stop dependent setup, and do not record Step 02
+as complete. They may review code without claiming the app has run successfully.
+
+For choice A, explain an API key as a private credential that lets Gemini associate
+requests with their account. Guide them to [Google AI Studio](https://aistudio.google.com/apikey).
+They sign in, handle account agreements, and create/select a key in their own
+project. Use [Google's guide](https://ai.google.dev/gemini-api/docs/api-key) if needed.
+Explain usage quotas and possible charges without promising free access or enabling
+billing for them. Ask only whether the key is ready, never to see it.
+
+### C. Save the choice in `.env`
+
+Explain: “The Python code can stay the same while each person uses their own
+settings. `.env` is the local file where we save those settings.” Copy `.env.example`
+to `.env` only if it doesn't exist; preserve existing values otherwise.
+
+Show only the selected option. For a working Gemini run today:
 
 ```dotenv
+INFERENCE_PROVIDER=gemini
 GEMINI_API_KEY=your_own_key_here
 ```
 
-Only the Gemini key needs student configuration. The model has a code default
-and the hosted Orders API URL is already fixed in `tools.py`. Explain that the app loads
-`.env` automatically. Never read, print, log or commit the key. Check `.env` is ignored
-with `git check-ignore .env`, then ask whether they saved it.
-Ask: “Why should the key stay out of GitHub and chat?”
+The student personally pastes their key in the editor. The AlmaBetter placeholder
+in the template is:
+
+```dotenv
+INFERENCE_PROVIDER=almabetter
+ALMABETTER_API_URL=
+```
+
+Explain that these are alternatives, not two inference services used together.
+AlmaBetter is the template's workshop choice but stays unavailable until integrated.
+The application reports setup needed even if someone fills in its placeholder URL;
+it does not quietly use a Gemini key instead. The Orders API URL is already fixed
+in `tools.py` and does not belong in either inference setting.
+
+Never read, print, log or commit keys. Check `.env` is ignored with
+`git check-ignore .env`; ask whether the student saved it. Use the existing privacy
+question if that understanding has not already been demonstrated. Restart Streamlit
+when changing providers or keys; exported settings take precedence over `.env`.
 
 ### D. Start the app
 
@@ -379,15 +415,17 @@ Check that the same order is used. Then try a new explicit order ID and confirm
 the lookup switches. Check replies and order cards, not just a loaded page.
 Ask: “Where did the current order information come from?”
 
-Troubleshoot without exposing credentials: setup error → saved `.env`; assistant
-error → connectivity/key/model/quota in AI Studio; order error → internet access
+Troubleshoot without exposing credentials: setup error → selected provider and saved `.env` (AlmaBetter is not integrated yet);
+assistant error on Gemini → connectivity/key/model/quota in AI Studio; order error → internet access
 and availability of the hosted endpoint in `tools.py`. Do not ask students to
 replace the endpoint or run a local server. Identify any port conflict before stopping
 services. Restart Streamlit after `.env` changes. An exported variable overrides
 `.env`; clear an outdated variable without printing it if necessary.
 
-Complete when their own key is privately configured, the local app runs and reaches the hosted API, two real
-Gemini-backed requests succeed, and they explain input → output and key privacy.
+Complete when an available inference option is privately configured, the local app
+runs and reaches the Orders API, two real AI-backed requests and a follow-up work,
+and the student explains input → output, the inference choice and key privacy.
+Currently this requires the Gemini option; a placeholder response is not success.
 Record Step `02` once for all checkpoints; do not record A–E separately.
 
 ## Step 3 — Understand the architecture
@@ -644,7 +682,9 @@ boundary; don't explain the entire Azure setup screen at once.
    from which Azure can download the application package. Check: “The image is now
    stored in the registry. Is our support website running yet?”
 2. **Run and connect:** Container Apps downloads the image and runs a container.
-   The instructor supplies `GEMINI_API_KEY` using a runtime secret. The Orders
+   The instructor uses the currently working Gemini option, with
+   `INFERENCE_PROVIDER=gemini` and `GEMINI_API_KEY` supplied as a runtime secret.
+   AlmaBetter cannot be demonstrated as working until its adapter is implemented. The Orders
    endpoint is already in the code, and Gemini's model has a default. The running
    app must reach both services over the network. No student key is baked into the
    image, and no separate Orders service is deployed for this workshop.

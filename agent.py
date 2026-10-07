@@ -42,6 +42,16 @@ def resolve(message: str, history: list[dict[str, str]] | None = None) -> Reply:
     message = message.strip()
     if not message or len(message) > 2000:
         return Reply(message="Please send a message of 1–2,000 characters.", status="Needs input")
+    provider = os.getenv("INFERENCE_PROVIDER", "gemini").strip().lower()
+    if provider == "almabetter":
+        # The instructor will supply the API contract and connect this branch later.
+        # Do not send requests to a guessed endpoint or silently use a personal key.
+        return Reply(message="AlmaBetter inference is not connected yet. "
+                     "For now, choose Gemini in Step 2 and add your own key, "
+                     "or wait for the instructor's API setup.", status="Setup needed")
+    if provider != "gemini":
+        return Reply(message="Set INFERENCE_PROVIDER to gemini or almabetter in .env.",
+                     status="Setup needed")
     if not os.getenv("GEMINI_API_KEY"):
         return Reply(message="The support assistant is not configured yet. "
                      "Add your own Gemini API key to the local .env file. Follow Step 2 with your coding guide.", status="Setup needed")
