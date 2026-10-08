@@ -1,4 +1,4 @@
-"""The screen: a conversation on the left, order details on the right."""
+"""The screen: conversation controls on the left, chat on the right."""
 import os
 from pathlib import Path
 
@@ -38,34 +38,32 @@ def reset_chat():
 
 # Blocks arranges the screen. State keeps a separate conversation for each visitor.
 with gr.Blocks(title="Order Support", analytics_enabled=False) as demo:
-    gr.Markdown("ALMABETTER · APPLIED AI WORKSHOP", elem_id="eyebrow")
-    gr.Markdown("# A little clarity for your delivery.\n"
-                "Check a parcel, ask a follow-up, and find your next step.")
     history = gr.State([])
     with gr.Row():
-        with gr.Column(scale=3):
+        with gr.Column(scale=1, min_width=220, elem_id="sidebar"):
+            gr.Markdown("### ALMABETTER\nAI support workshop", elem_id="brand")
+            clear = gr.Button("＋ Start a new conversation", variant="primary")
+            order_card = gr.Markdown(EMPTY_ORDER)
+            gr.Markdown("---\nHistorical practice records.\n\n"
+                        "This app cannot change orders or issue refunds.")
+        with gr.Column(scale=4, min_width=300):
+            gr.Markdown("# Order support\nAsk about your parcel. We'll help you find the next step.")
             chat = gr.Chatbot(
-                label="Your conversation", height=390, layout="bubble",
-                placeholder="Ask about an order to get started.",
+                label="Conversation", show_label=False, height=430, layout="bubble",
+                placeholder="How can we help with your order?",
                 render_markdown=False, buttons=["copy"],
             )
-            message = gr.Textbox(label="Your message", placeholder="Where is my order?",
-                                 lines=1, max_lines=3)
             with gr.Row():
-                send = gr.Button("Send message", variant="primary")
-                clear = gr.Button("Start a new conversation")
+                message = gr.Textbox(
+                    show_label=False, placeholder="Type your message…",
+                    lines=1, max_lines=3, scale=5,
+                )
+                send = gr.Button("Send", variant="primary", scale=1, min_width=85)
             gr.Examples(
                 examples=[["Where is order ee64d42b8cf066f35eac1cf57de1aa85?"]],
-                inputs=message, label="Try a practice order",
+                inputs=message, label="Try an example",
             )
-        with gr.Column(scale=1, min_width=260, variant="panel"):
-            order_card = gr.Markdown(EMPTY_ORDER)
-            gr.Markdown("---\n### Keep the conversation going\n"
-                        "After checking an order, try:\n\n"
-                        "“I need it for class. What should I do now?”\n\n"
-                        "You don't need to repeat the order number.")
-    gr.Markdown("Practice with historical records. This app can suggest help, "
-                "but cannot change orders or issue refunds.")
+            gr.Markdown("You can ask follow-up questions without repeating the order number.")
 
     # Enter and Send do the same job. Reset uses the same queue to avoid stale replies.
     gr.on(triggers=[message.submit, send.click], fn=reply,
@@ -79,8 +77,17 @@ with gr.Blocks(title="Order Support", analytics_enabled=False) as demo:
 if __name__ == "__main__":
     demo.launch(
         server_name=os.getenv("GRADIO_SERVER_NAME", "127.0.0.1"), server_port=7860,
-        theme=gr.themes.Soft(primary_hue="teal", neutral_hue="slate"),
-        css=".gradio-container {max-width: 1100px !important;} "
-            "#eyebrow {letter-spacing: .12em; font-size: 12px; color: #0f766e;}",
+        theme=gr.themes.Base(primary_hue="red", neutral_hue="zinc",
+                             font=["Arial", "sans-serif"]),
+        css="""
+            .gradio-container {max-width: 1180px !important;}
+            #sidebar {background: #111113; border-radius: 16px; padding: 24px;}
+            #sidebar .prose, #sidebar .prose * {color: #f4f4f5;}
+            #sidebar code {background: #27272a; overflow-wrap: anywhere;}
+            #sidebar hr {border-color: #3f3f46;}
+            #brand h3 {color: #f87171; letter-spacing: .08em;}
+            button.primary {background: #dc2626 !important; color: white !important;}
+            button.primary:hover {background: #b91c1c !important;}
+        """,
         footer_links=[], share=False,
     )
