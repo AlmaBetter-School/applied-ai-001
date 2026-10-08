@@ -1,170 +1,129 @@
-# AI Support Resolution Agent
+# Where is my order?
 
-**AlmaBetter Guided Workshop · Applied AI Developer · Starter**
-Project ID: `applied-ai-001`
+**AlmaBetter guided workshop · applied-ai-001**
 
-Build your understanding of a working AI application by using it, exploring its
-code, and making a small change—with your AI coding assistant as a guide.
+Imagine your headphones have not arrived and your next online class is tomorrow.
+A friendly reply helps, but you also need someone to check what happened and explain
+what you can do. In this project, Python looks up an order and DeepSeek helps choose
+an appropriate response using the shop's rules.
 
-## The problem you will solve
+You will run an existing app, explore how its parts work together, and follow the
+instructor as they package it with Docker and demonstrate running it on Azure.
+No previous AI, API, or cloud experience is assumed.
 
-> “My order #1003 hasn't arrived. What can you do?”
+## Start here
 
-A useful support assistant needs more than a convincing answer. It must identify
-the order, check its actual status, and recommend a next step that follows company
-policy. A language model alone cannot know where a customer's parcel is.
+Open your copy of this folder in the workshop IDE and say **“Start project.”**
+Connect the instructor's AlmaBetter MCP service for registration and progress.
+The guide takes you through registration and skill familiarity before the story.
+You do not need to study the guide files or install everything on your own first.
 
-In this workshop, you will explore an assistant that combines **Gemini + structured
-output + an Orders API + company policy** to answer delivery questions in a simple
-chat interface. It shows the order details alongside the response so the customer
-can see the information behind the answer.
-
-This pattern is useful wherever AI needs business facts before it responds—for
-example, checking a booking, explaining a service request, or answering an inventory
-question. The skill you practise is connecting language understanding to a reliable
-data source and clear rules.
-
-## How the workshop works
-
-You start with a working application, not a blank folder. Your coding assistant
-helps you run it, asks questions, and guides you through one step at a time. You
-inspect the real files and make the changes yourself, with hints when needed.
-
-By the end, you should be able to:
-
-- Explain which parts of an answer come from the model, the API, and company policy.
-- Use structured output to turn a customer message into fields software can use.
-- Trace a request through a tool/API call and back to the UI.
-- Add a small feature and check that existing requests still work.
-- Explain how Docker packages the application and how it reaches the cloud.
-
-Progress depends on demonstrating understanding and completing the activities.
-The guide adjusts explanation depth to your experience.
-
-## Start your guided project
-
-Have Python 3.13 and your AI coding IDE available. A Google account is needed
-only for optional personal Gemini access later. Open this project folder and connect the instructor's AlmaBetter MCP service for onboarding
-and progress recording. Then tell your coding assistant:
-
-> **Start project**
-
-The guide first opens registration and skill-familiarity forms. After onboarding,
-it starts with the customer-support problem, then guides local setup. Learning
-comes from this cloned folder's `.almabetter/` files, one step at a time:
-
-| Step | Your activity |
+| Step | What you do |
 |---|---|
-| 1 | Understand the customer-support problem |
-| 2 | Understand the AI connection and run the app locally |
-| 3 | Trace how a request moves through the application |
-| 4 | Explore the five core files |
-| 5 | Understand structured output, tools, context, and when RAG is useful |
-| 6 | Add a `priority` field for urgent requests |
-| 7 | Follow the instructor's Docker and Azure deployment demonstration |
-| 8 | Solve a final support scenario and explain the system |
+| 1 | Meet the customer and understand what useful help looks like |
+| 2 | Run the app on your computer and try a conversation |
+| 3 | Explore the files, one small section at a time |
+| 4 | Follow one question through the whole app |
+| 5 | Understand Docker and watch the instructor's Azure demonstration |
 
-**You do not need to complete setup alone.** Step 2 guides you through the workshop AI connection, local settings, and testing
-the application. There is no provider-selection step. Students do not
-configure Azure; deployment is an instructor demonstration.
+## Four files tell the story
 
-## What the application does
-
-```text
-Customer message → Understand the request → Fetch order facts
-                 → Apply company policy → Explain the next step
-```
-
-Try “Where is order ee64d42b8cf066f35eac1cf57de1aa85?”
-The app reads historical order records from the hosted workshop API and makes real Gemini
-calls using your key. The model selects a tone and next step; Python inserts verified
-order facts into the answer. It cannot issue refunds, change orders, or create tickets.
-Ask follow-up questions without repeating the order ID. The latest 12 messages
-(six exchanges) are sent to Gemini with your new message. Order facts are fetched
-again each time. History stays in the browser session and resets with “Start a new
-conversation” or a new session; it is not saved to disk.
-
-## Five files to explore
-
-| File | What you will learn from it |
+| File | Its job |
 |---|---|
-| `app.py` | How customer input and order details appear in the UI |
-| `agent.py` | How the AI workflow connects understanding, facts, and policy |
-| `models.py` | How structured data makes model output usable by code |
-| `tools.py` | How the application looks up an order in the hosted dataset |
-| `policy.md` | How company rules shape the next step |
+| `app.py` | The screen: messages, answers, and order details |
+| `tools.py` | The lookup: find the order in the shop's records |
+| `policy.md` | The rules: what help the shop allows |
+| `agent.py` | The coordinator: connect the message, records, rules, and DeepSeek |
 
-The remaining files help with setup, testing, and deployment. The guide files
-have simple jobs:
-
-- `AGENTS.md` tells your AI assistant where to start.
-- `.almabetter/project.md` contains the workshop steps.
-- `.almabetter/conversation-level.md` helps the assistant explain at your pace.
-
-You do not need to read or edit these guide files. Say **“Start project”** and
-follow one activity at a time. There is no RAG implementation in this project.
+`requirements.txt` lists the packages to install. `.env` holds your private key.
+`Dockerfile` describes the package used in the final demonstration. The small
+`AGENTS.md` points the coding assistant to `.almabetter/project.md`; students
+follow the conversation, not those internal instructions. `tests/` is for maintainers.
 
 ## Local setup reference
 
-Use these commands with your guide, from this folder:
+Your guide explains each command before you run it. Use Python 3.13.
+
+**macOS / Linux**
 
 ```sh
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
 ```
 
-Copy `.env.example` to `.env` only if it does not already exist. **AlmaBetter
-inference is the default.** Students do not need to choose a provider or create
-an AI account for the intended workshop flow.
+**Windows PowerShell**
 
-The AlmaBetter endpoint and adapter are still pending instructor integration.
-`ALMABETTER_API_URL` is a placeholder: entering a URL alone will not enable requests.
-Until connected, the default reports “Setup needed”; do not treat this as a
-successful end-to-end run.
+```powershell
+py -3.13 -m venv .venv
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
 
-For independent use, optionally add a personal `GEMINI_API_KEY` from
-[Google AI Studio](https://aistudio.google.com/apikey). A non-empty key **automatically
-uses Gemini instead**; blank or whitespace-only keys use the AlmaBetter route.
-There is no provider selector. An invalid Gemini key returns an error rather than
-silently falling back. Keep keys private; personal usage limits and charges apply.
-The app loads `.env` automatically; restart it after changing settings.
+Copy `.env.example` to `.env` using the file explorer only if `.env` does not already
+exist. Paste the workshop-provided DeepSeek key into that private file:
 
-The [Orders API](http://4.186.26.27:8787/ecommerce?dataset=orders) is separate: it
-provides order facts and its URL is already fixed in `tools.py`.
-Start the application with one command:
+```dotenv
+DEEPSEEK_API_KEY=your_key_here
+```
+
+If you need your own key, sign in to the [DeepSeek platform](https://platform.deepseek.com/),
+open API keys, and create one. API access needs an available balance. Do not share
+your key in chat, screenshots, GitHub, or the Docker image. Restart after changing it.
+There is only one AI provider setting: `DEEPSEEK_API_KEY`.
+
+Start the app:
 
 ```sh
+# macOS / Linux
 .venv/bin/python -m streamlit run app.py
 ```
 
-On Windows, create the environment with `py -3.13 -m venv .venv` and replace
-`.venv/bin/python` with `.\.venv\Scripts\python.exe` in subsequent commands.
-Open http://localhost:8501—no Deploy button is needed.
+```powershell
+# Windows PowerShell
+.venv\Scripts\python.exe -m streamlit run app.py
+```
 
-Example IDs: `ee64d42b8cf066f35eac1cf57de1aa85` (shipped),
-`15bed8e2fec7fdbadb186b57c46c92f2` (processing), and
-`e481f51cbdc54678b7cc49136f2d6af7` (delivered), as recorded in the dataset.
-These are historical records, not live tracking; use the API's returned status
-and dates. The opening story's short order numbers are illustrative only.
-The endpoint returns the full dataset, so lookup may take a few seconds.
-If a request fails, check internet access, API availability and your Gemini key/quota.
-Restart Streamlit after editing `.env`; exported variables take precedence.
+Open the local address printed in the terminal, usually `http://localhost:8501`.
+Ask “Where is order ee64d42b8cf066f35eac1cf57de1aa85?” and then “I need it for class.
+What should I do now?” Use **Start a new conversation** to clear the chat.
 
-<details>
-<summary>Instructor and maintainer reference</summary>
+## What this small app can do
 
-`tools.py` requests the fixed dataset URL, selects the exact order ID, and maps
-`order_status` and delivery dates into `models.Order`. It never creates a current
-tracking update or falls back to made-up records. The full dataset remains in the
-lookup process; only the selected order's support fields are sent to Gemini.
+Python finds the newest complete order number supplied by the customer and fetches
+that order. DeepSeek receives the last six exchanges, the selected record, and the
+shop's rules. It returns two short labels: tone and next step. Python checks those
+labels and builds an answer with recorded facts. That means one AI request per
+successful order lookup, with a 150-token output limit and thinking disabled.
+The model is `deepseek-flash`; the HTTPS endpoint is fixed in `agent.py`.
+The request follows [DeepSeek’s JSON output format](https://api-docs.deepseek.com/guides/json_mode/).
 
-Build with `docker build -t applied-ai-001 .`. The image runs Streamlit on port 8501.
-For Azure Container Apps, configure ingress on that port. AlmaBetter inference
-awaits instructor integration; a personal Gemini key supplied as a runtime secret
-automatically overrides the default.
-The app calls the existing Orders API; no second service or API URL setting is needed.
+The [Orders API](http://4.186.26.27:8787/ecommerce?dataset=orders) is fixed in
+`tools.py`. It contains historical records, not live tracking. The app cannot
+change orders or issue refunds. It uses prepared answer sentences, so this is a
+focused support example, not a general-purpose chatbot. Replies appear once ready.
+Chat history stays in the current Streamlit session, not on disk.
 
-Run checks from this folder:
+## Instructor: Docker and Azure
+
+Explain the Dockerfile before running these commands from the project folder:
+
+```sh
+docker build --platform linux/amd64 -t order-support .
+docker run --rm -p 8501:8501 --env-file .env order-support
+```
+
+Open `http://localhost:8501`. Stop any earlier local app using port 8501 first.
+`.dockerignore` keeps the key out of the build; `--env-file` supplies it at runtime.
+
+For Azure Container Apps, the instructor pushes the image to a container registry,
+creates a container app using that image, supplies `DEEPSEEK_API_KEY` through an
+Azure secret reference, enables HTTP ingress with target port 8501, and tests the
+public link. Use the instructor's subscription and configured registry access.
+The image contains our app; DeepSeek and the order records remain external services.
+Students explain what changed between local and online; they need not provision Azure.
+The instructor can use the [Azure portal guide](https://learn.microsoft.com/en-us/azure/container-apps/quickstart-portal)
+and [secret configuration guide](https://learn.microsoft.com/en-us/azure/container-apps/manage-secrets).
+
+## Maintainer checks
 
 ```sh
 .venv/bin/python -m pip install pytest==9.1.1
@@ -172,7 +131,5 @@ Run checks from this folder:
 .venv/bin/python -m pip check
 ```
 
-Tests mock the hosted HTTP response and Gemini replies. Live Gemini checks need a key.
-Keep status-specific checks in `agent.py` aligned with changes to `policy.md`.
-
-</details>
+Tests simulate the external services and need no key. A live request is a separate
+check requiring network access and a working DeepSeek key.
