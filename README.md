@@ -24,7 +24,12 @@ You do not need to study the guide files or install everything on your own first
 | 2 | Run the app on your computer and try a conversation |
 | 3 | Explore the files, one small section at a time |
 | 4 | Follow one question through the whole app |
-| 5 | Understand Docker and watch the instructor's Azure demonstration |
+| 5 | Understand how RAG helps an assistant find useful help documents |
+| 6 | Understand Docker and watch the instructor's Azure demonstration |
+
+The RAG activity is a short, guided example: find the relevant help passage, give
+it to the AI, then explain the answer. It adds no code or packages; the app still
+uses one order lookup and its small policy file.
 
 ## Four files tell the story
 

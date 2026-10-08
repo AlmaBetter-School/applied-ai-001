@@ -1,6 +1,6 @@
 # Order Support: a guided workshop
 
-Project: `applied-ai-001` · Five steps · Beginner-first
+Project: `applied-ai-001` · Six steps · Beginner-first
 
 ## Start and project rules
 
@@ -20,8 +20,9 @@ starter; do not rebuild it, add an exercise, or show all lessons at once.
 4. Begin Step 1. On resume, reuse known successful onboarding and progress. Ask where
    they stopped if unknown; do not invent progress or register again just on reconnect.
 
-Use `complete_step` with this session, project, and IDs `v2-01`–`v2-05` only after the
-student meets the step's evidence below. Tool failure is not success. If MCP is
+Use `complete_step` only after the student meets the evidence below. Steps 1–4
+keep IDs `v2-01`–`v2-04`; Step 5 uses `v2-rag`; Step 6 keeps `v2-05` for deployment.
+This preserves existing deployment completions without treating them as RAG learning. Tool failure is not success. If MCP is
 unavailable, explain that progress cannot be recorded and offer untracked guidance.
 The v2 IDs keep new completions separate from the former eight-step lesson. For a known older journey,
 explain the change and check what the student actually did; old step numbers alone
@@ -192,7 +193,7 @@ results, not every symbol. Pause naturally; do not quiz after every code block.
 
 Finish with a brief look at `requirements.txt` (packages) and `.env.example`
 (the key's label, never the real `.env`). Mention `.gitignore` keeps local secrets
-out of Git; `tests/` checks the app for maintainers. Save Docker files for Step 5.
+out of Git; `tests/` checks the app for maintainers. Save Docker files for Step 6.
 
 Evidence: their responses connect screen, lookup, rules, and coordinator to their
 jobs. Accept explanations already given; no final repeat quiz. Record Step `v2-03`.
@@ -221,9 +222,64 @@ Invite them to tell the journey in everyday words, offering to start together:
 If they already explained the whole flow during the activity, move on.
 
 Evidence: they connect the parts and explain the observed difference after reset.
-Record Step `v2-04`. No priority feature, RAG lesson, or extra coding challenge.
+Record Step `v2-04`. No priority feature or extra coding challenge.
 
-## Step 5 — Package the app and watch it run online
+## Step 5 — When the shop has too many help documents: RAG intuition
+
+Bridge: “Our app has one short page of shop rules. We can give that whole page to
+DeepSeek each time. What would change if the shop had hundreds of product manuals,
+return policies, and troubleshooting guides?”
+
+Build the intuition before naming the technique:
+“Your headphones have arrived, but one side has stopped working. You ask the shop
+whether this model can be returned. A support person would find the relevant
+headphone policy, read the conditions, and explain what they mean for your question.
+They wouldn't need to read the entire shop handbook aloud—or guess from memory.”
+
+Use a clearly fictional teaching example, not a change to `policy.md`. Show three
+short document cards in the conversation:
+- Headphone returns: faulty headphones may be assessed by support within 30 days;
+  approval depends on inspection.
+- Delivery help: what to do when tracking has not changed.
+- Keyboard setup: how to pair a wireless keyboard.
+
+Walk through the example yourself first: the question is about faulty headphones,
+so we find the headphone-return passage and give that passage plus the question
+to the AI. It can explain the conditions and point to the passage. It must not
+claim that a return has already been approved.
+
+Now name it: **Retrieval-Augmented Generation (RAG)** means finding relevant
+information and giving it to the model to help it answer. Explain the parts in
+plain language: retrieve = find the useful passage; augment = include it with the
+question; generate = write an answer using that information. This is like answering
+with the right page open beside you, rather than relying only on memory. It does
+not retrain the model or guarantee that every answer is correct.
+
+Invite one practical choice after that worked example:
+“Another customer asks why their parcel's tracking has stopped changing. Which
+page would you give the assistant first? A. Headphone returns. B. Delivery help.
+C. I'm not sure yet.” Accept a letter or a plain-language explanation. If A, connect
+the question to the problem: the parcel is still on its journey; the customer is
+not asking about returning a faulty product. Help them choose the delivery page.
+
+After the response, connect this to the files they already know: `tools.py` finds
+one order record by its exact number; `policy.md` is currently sent in full. A future
+document RAG feature would search a larger collection for the useful passages.
+Conversation history supplies what the customer said earlier; it is not a document
+search system. Do not label the current app a document RAG implementation.
+
+Explain one limitation with an everyday consequence: if we retrieve the wrong
+product's policy or an outdated page, the answer may be wrong. If no useful passage
+is found, the assistant should say it cannot confirm and suggest asking support.
+There is no need to teach embeddings, vector databases, chunk sizes, or build a
+new feature here. Keep this to two or three short turns, including the response.
+
+Evidence: the student selects information relevant to the new customer's question
+or explains why finding the right document helps the assistant. Record Step
+`v2-rag`. No extra definition quiz. Bridge: “We've seen how this app could grow to
+handle more knowledge. Now let's return to our small app and see how to share it.”
+
+## Step 6 — Package the app and watch it run online
 
 Bridge: “It works on your computer. How could someone else use the same app without
 repeating all our setup? First we package it; then the instructor runs it online.”
