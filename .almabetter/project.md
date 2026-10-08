@@ -7,11 +7,11 @@ Project: `applied-ai-001` · Five steps · Beginner-first
 Read this file when the student says “Start project” or resumes. Use the existing
 starter; do not rebuild it, add an exercise, or show all lessons at once.
 
-1. Inspect the connected MCP tool schemas. Begin with `get_project_setup`. If the
-   student's fork is already cloned and open, verify and reuse it; otherwise guide
-   fork → clone → open folder. Do not clone into the MCP service repository.
-2. After the project folder is confirmed open and the student asks to start, prefer
-   `register_student_form(project_workspace_ready=true)`. Then use
+1. The student is starting from this open project folder. Inspect the connected
+   MCP tool schemas and verify the workspace silently using the IDE. Do not call
+   `get_project_setup`, ask for a fork URL, or repeat cloning or folder selection.
+   Start the conversation with: “Let's get you registered for the workshop.”
+2. Open `register_student_form(project_workspace_ready=true)` immediately, then
    `record_concepts_form(student_session_id)`. If the client cannot show forms,
    use the corresponding registration and concept tools with the student's answers.
    Never invent answers. Cancellation pauses onboarding; an empty skills list is valid.
