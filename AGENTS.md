@@ -1,7 +1,9 @@
 # Start the guided workshop
 
 When the student says **"Start project"**, **"Start my AlmaBetter project"**,
-or asks to resume, read [.almabetter/project.md](.almabetter/project.md).
+or asks to resume, read the opening rules and current step in
+[.almabetter/project.md](.almabetter/project.md). Reuse context already read;
+do not reload the full guide each turn.
 Begin with registration, then the skills form and the project story.
 Do not repeat fork, clone, or project setup in this already-open folder.
 The guide contains the full teaching flow and project rules.
