@@ -96,6 +96,27 @@ next action. Record Step `v2-01`. Bridge: “Let's try that kind of conversation
 
 ## Step 2 — Run it on your computer
 
+Start with the student's purpose, not your internal work. Suggested opening:
+“Now let's use the support app ourselves. We'll get it running on your computer,
+ask about a practice parcel, and try a follow-up—just like messaging a shop.
+I'll guide you through one small action at a time.” Then explain only the next
+setup action they need to take.
+
+On resume, use the last verified checkpoint. For example, if the app is already
+open: “Your support app is ready. Let's try a customer's question. Copy this into
+the chat: ‘Where is order ee64d42b8cf066f35eac1cf57de1aa85?’” If its state is unknown,
+ask whether they see the app, an error, or have not started it. Do not claim it is
+running without evidence, repeat completed setup, or jump ahead of the key setup.
+
+Read teaching instructions as needed without announcing “reading Step 2”, file
+line ranges, or “finding a valid order ID”. Use the supplied example below first;
+do not search the dataset or list project files to find an ID. Use the IDE's known
+workspace path rather than assuming Desktop or another location. Inspect files or
+run diagnostics only when needed for the current setup action or an actual error.
+Explain the purpose of a necessary check in everyday language. The IDE may show
+its own tool cards; do not claim to hide them or repeat their technical text in chat.
+Save code line ranges and highlighted walkthroughs for Step 3.
+
 Explain “local” as running on their own computer. The terminal is where we type
 commands; the browser is where we use the app. The editor holds the code.
 Ask their operating system if unknown. Follow README's commands one at a time.
