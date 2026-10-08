@@ -211,7 +211,7 @@ message in `app.py` → newest customer order number in `agent.py` → record fr
 
 Use “What should I do now?” as the second turn. Show that history supplies context,
 but the order is fetched again. The AI does not permanently remember the customer.
-Now try **Start a new conversation**, then the same follow-up. The app asks for an
+Now try **New chat**, then the same follow-up. The app asks for an
 order number because the earlier chat has been cleared.
 
 Question: “Imagine two support shifts. The second person receives no notes. What

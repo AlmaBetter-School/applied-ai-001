@@ -40,12 +40,12 @@ def reset_chat():
 with gr.Blocks(title="Order Support", analytics_enabled=False) as demo:
     history = gr.State([])
     with gr.Row():
-        with gr.Column(scale=1, min_width=220, elem_id="sidebar"):
-            gr.Markdown("### ALMABETTER\nAI support workshop", elem_id="brand")
-            clear = gr.Button("＋ Start a new conversation", variant="primary")
+        with gr.Column(scale=1, min_width=230, elem_id="sidebar"):
+            gr.Markdown("### AlmaBetter\nOrder support", elem_id="brand")
+            clear = gr.Button("＋ New chat", elem_id="new-chat")
             order_card = gr.Markdown(EMPTY_ORDER)
             gr.Markdown("---\nHistorical practice records.\n\n"
-                        "This app cannot change orders or issue refunds.")
+                        "This app cannot change orders or issue refunds.", elem_id="sidebar-note")
         with gr.Column(scale=4, min_width=300):
             gr.Markdown("# Order support\nAsk about your parcel. We'll help you find the next step.")
             chat = gr.Chatbot(
@@ -81,11 +81,21 @@ if __name__ == "__main__":
                              font=["Arial", "sans-serif"]),
         css="""
             .gradio-container {max-width: 1180px !important;}
-            #sidebar {background: #111113; border-radius: 16px; padding: 24px;}
-            #sidebar .prose, #sidebar .prose * {color: #f4f4f5;}
-            #sidebar code {background: #27272a; overflow-wrap: anywhere;}
-            #sidebar hr {border-color: #3f3f46;}
-            #brand h3 {color: #f87171; letter-spacing: .08em;}
+            #sidebar {background: #f5f5f5; border-radius: 12px; padding: 18px; gap: 24px;}
+            #sidebar .prose, #sidebar .prose * {color: #525252; font-size: 13px;}
+            #sidebar h3 {font-size: 14px !important; color: #171717 !important;}
+            #sidebar code {background: #eaeaea; overflow-wrap: anywhere;}
+            #sidebar hr {border-color: #e5e5e5;}
+            #brand h3 {font-size: 18px !important; letter-spacing: -.03em;}
+            #new-chat {background: transparent; border: 0; box-shadow: none;
+                       color: #171717; justify-content: flex-start; text-align: left; padding: 10px 12px; border-radius: 8px;}
+            #new-chat:hover {background: #e8e8e8;}
+            #sidebar-note {margin-top: auto;}
+            .dark #sidebar {background: #202020;}
+            .dark #sidebar .prose, .dark #sidebar .prose * {color: #bcbcbc;}
+            .dark #sidebar h3, .dark #new-chat {color: #f5f5f5 !important;}
+            .dark #sidebar code, .dark #new-chat:hover {background: #303030;}
+            @media (min-width: 768px) {#sidebar {min-height: 660px;}}
             button.primary {background: #dc2626 !important; color: white !important;}
             button.primary:hover {background: #b91c1c !important;}
         """,

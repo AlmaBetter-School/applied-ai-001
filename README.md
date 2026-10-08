@@ -89,7 +89,7 @@ Start the app:
 
 Open the local address printed in the terminal, usually `http://localhost:7860`.
 Ask “Where is order ee64d42b8cf066f35eac1cf57de1aa85?” and then “I need it for class.
-What should I do now?” Use **Start a new conversation** to clear the chat.
+What should I do now?” Use **New chat** to clear the chat.
 
 ## What this small app can do
 
