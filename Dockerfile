@@ -5,5 +5,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app.py agent.py tools.py policy.md ./
 RUN useradd --create-home student
 USER student
-EXPOSE 8501
-CMD ["streamlit", "run", "app.py", "--server.address=0.0.0.0", "--server.port=8501", "--server.headless=true", "--browser.gatherUsageStats=false"]
+ENV GRADIO_SERVER_NAME=0.0.0.0
+EXPOSE 7860
+CMD ["python", "app.py"]

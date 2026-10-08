@@ -79,15 +79,15 @@ Start the app:
 
 ```sh
 # macOS / Linux
-.venv/bin/python -m streamlit run app.py
+.venv/bin/python app.py
 ```
 
 ```powershell
 # Windows PowerShell
-.venv\Scripts\python.exe -m streamlit run app.py
+.venv\Scripts\python.exe app.py
 ```
 
-Open the local address printed in the terminal, usually `http://localhost:8501`.
+Open the local address printed in the terminal, usually `http://localhost:7860`.
 Ask “Where is order ee64d42b8cf066f35eac1cf57de1aa85?” and then “I need it for class.
 What should I do now?” Use **Start a new conversation** to clear the chat.
 
@@ -105,7 +105,7 @@ The [Orders API](http://4.186.26.27:8787/ecommerce?dataset=orders) is fixed in
 `tools.py`. It contains historical records, not live tracking. The app cannot
 change orders or issue refunds. It uses prepared answer sentences, so this is a
 focused support example, not a general-purpose chatbot. Replies appear once ready.
-Chat history stays in the current Streamlit session, not on disk.
+Chat history stays in the current Gradio browser session, not on disk.
 
 ## Instructor: Docker and Azure
 
@@ -113,15 +113,15 @@ Explain the Dockerfile before running these commands from the project folder:
 
 ```sh
 docker build --platform linux/amd64 -t order-support .
-docker run --rm -p 8501:8501 --env-file .env order-support
+docker run --rm -p 7860:7860 --env-file .env order-support
 ```
 
-Open `http://localhost:8501`. Stop any earlier local app using port 8501 first.
+Open `http://localhost:7860`. Stop any earlier local app using port 7860 first.
 `.dockerignore` keeps the key out of the build; `--env-file` supplies it at runtime.
 
 For Azure Container Apps, the instructor pushes the image to a container registry,
 creates a container app using that image, supplies `DEEPSEEK_API_KEY` through an
-Azure secret reference, enables HTTP ingress with target port 8501, and tests the
+Azure secret reference, enables HTTP ingress with target port 7860, and tests the
 public link. Use the instructor's subscription and configured registry access.
 The image contains our app; DeepSeek and the order records remain external services.
 Students explain what changed between local and online; they need not provision Azure.

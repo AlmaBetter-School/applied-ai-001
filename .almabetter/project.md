@@ -129,7 +129,7 @@ C. Copy `.env.example` to `.env` only if absent. Explain a key as the private ac
 credential the app uses to contact DeepSeek. Guide pasting the provided key directly
 into that file. If they need their own, guide the DeepSeek platform's API keys page.
 Do not request the key in chat or display the file. No provider or URL choices.
-D. Run Streamlit with the virtual environment's Python. Explain the terminal stays
+D. Run `app.py` with the virtual environment's Python; Gradio opens the web app. Explain the terminal stays
 running while the app is open. Open its printed local link. Do not use Deploy.
 E. Copy this complete example: “Where is order ee64d42b8cf066f35eac1cf57de1aa85?”
 Then try “I need it for class. What should I do now?” Explain that the sample records
@@ -153,10 +153,11 @@ Otherwise show the exact line range and a short excerpt. Verify editor actions;
 never claim to open or highlight a file without tool support. Explain inputs and
 results, not every symbol. Pause naturally; do not quiz after every code block.
 
-1. **`app.py`: the support desk.** Show the title and chat box, then the call to
-   `resolve`, then the displayed answer. Point at those same parts in the browser.
-   Explain session state as the place Streamlit remembers earlier messages while
-   rerunning the page. `answer, order` receives two results. A dictionary stores
+1. **`app.py`: the support desk.** Show the heading and chat box, then `reply` calling
+   `resolve`, then the returned answer and order card. Point at those same parts in the browser.
+   Explain `gr.State` as the place Gradio keeps this visitor's earlier messages.
+   `gr.on` connects Enter and the Send button to `reply`; the reset button clears
+   the conversation and card. The page updates when these functions return. `answer, order` receives two results. A dictionary stores
    labelled values; `order["status"]` reads the value labelled status.
    Invite a practical prediction: “We want a friendlier heading. Where should we
    look? A. The screen file we just opened. B. The shop's written rules.”
@@ -291,7 +292,8 @@ actual `Dockerfile`, highlighting one group at a time:
 - The two `COPY` commands and `RUN pip install`: bring the package list, install
   what it needs, then include the three Python files and the shop's rules.
 - `RUN useradd` and `USER`: run the app as an ordinary user rather than administrator.
-- `EXPOSE` and `CMD`: document port 8501 and start Streamlit. `0.0.0.0` lets traffic
+- `EXPOSE` and `CMD`: document port 7860 and start `python app.py`. The `ENV` line sets
+  `GRADIO_SERVER_NAME=0.0.0.0`, which lets traffic
   reach it inside the container. `EXPOSE` alone does not publish a website.
 
 Open `.dockerignore`: `.env` and other local files stay outside the build. The key
@@ -302,14 +304,14 @@ privately. B. Your private key so everyone can use your account.”
 
 Instructor demonstration, using README commands:
 1. Check Docker is running. Build the image. Explain this prepares the package.
-2. Stop the earlier app if it occupies port 8501. Run the image with `-p 8501:8501`
+2. Stop the earlier app if it occupies port 7860. Run the image with `-p 7860:7860`
    and `--env-file .env`. Explain the first maps the computer's port to the app;
    the second supplies the key privately. Open localhost and test a question.
 3. Upload the image to the instructor's container registry. Explain this as a
    place Azure can fetch the package; uploading alone does not run it.
 4. Create an Azure Container App from that image. Configure registry access,
    the DeepSeek key as a secret-backed environment variable, and HTTP ingress
-   targeting port 8501. Explain ingress as allowing visitors to reach the app.
+   targeting port 7860. Explain ingress as allowing visitors to reach the app.
 5. Open the public link and try an order question and follow-up. DeepSeek and the
    existing Orders API stay external; we are putting our Python app on Azure.
 

@@ -1,49 +1,86 @@
-"""The screen: collect a question and show the answer and order details."""
+"""The screen: a conversation on the left, order details on the right."""
+import os
 from pathlib import Path
 
-import streamlit as st
+import gradio as gr
 from dotenv import load_dotenv
 
 from agent import resolve
 
 load_dotenv(Path(__file__).with_name(".env"))
-st.set_page_config(page_title="Order Support", page_icon="📦")
-st.set_option("client.toolbarMode", "viewer")
-st.title("Where is my order?")
-st.write("Ask about a parcel, then ask a follow-up without repeating its number.")
-st.caption("Workshop example · Historical order records, not live tracking")
+EMPTY_ORDER = "### Your order\nOrder details will appear here after a successful lookup."
 
-# Streamlit reruns this file after each interaction. Session state remembers the chat.
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-if "order" not in st.session_state:
-    st.session_state.order = None
 
-if st.button("Start a new conversation"):
-    st.session_state.messages = []
-    st.session_state.order = None
+def reply(message, history):
+    """Ask the agent, remember the exchange, and update the order card."""
+    if not message.strip():
+        return "", history, history, gr.skip()
+    answer, order = resolve(message, history)
+    history = history + [
+        {"role": "user", "content": message},
+        {"role": "assistant", "content": answer},
+    ]
+    details = EMPTY_ORDER
+    if order:
+        details = (
+            f"### Your order\n**{order['status'].title()}**\n\n"
+            f"Order number\n`{order['order_id']}`\n\n"
+            f"**Estimated delivery**\n{order['expected_delivery'] or 'Not recorded'}\n\n"
+            f"**Delivered on**\n{order['delivered_on'] or 'Not recorded'}\n\n"
+            "*Historical records · not live tracking*"
+        )
+    return "", history, history, details
 
-if not st.session_state.messages:
-    st.info("Try: Where is order ee64d42b8cf066f35eac1cf57de1aa85?")
 
-message = st.chat_input("Ask about your order…", max_chars=2000)
-if message:
-    with st.spinner("Checking the order and preparing a reply…"):
-        answer, order = resolve(message, st.session_state.messages)
-    st.session_state.messages.append({"role": "user", "content": message})
-    st.session_state.messages.append({"role": "assistant", "content": answer})
-    st.session_state.order = order
+def reset_chat():
+    return "", [], [], EMPTY_ORDER
 
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.text(message["content"])
 
-order = st.session_state.order
-if order:
-    st.subheader("Order details")
-    st.write("Order number:", order["order_id"])
-    st.write("Recorded status:", order["status"])
-    st.write("Estimated delivery:", order["expected_delivery"] or "Not recorded")
-    st.write("Delivered on:", order["delivered_on"] or "Not recorded")
+# Blocks arranges the screen. State keeps a separate conversation for each visitor.
+with gr.Blocks(title="Order Support", analytics_enabled=False) as demo:
+    gr.Markdown("ALMABETTER · APPLIED AI WORKSHOP", elem_id="eyebrow")
+    gr.Markdown("# A little clarity for your delivery.\n"
+                "Check a parcel, ask a follow-up, and find your next step.")
+    history = gr.State([])
+    with gr.Row():
+        with gr.Column(scale=3):
+            chat = gr.Chatbot(
+                label="Your conversation", height=390, layout="bubble",
+                placeholder="Ask about an order to get started.",
+                render_markdown=False, buttons=["copy"],
+            )
+            message = gr.Textbox(label="Your message", placeholder="Where is my order?",
+                                 lines=1, max_lines=3)
+            with gr.Row():
+                send = gr.Button("Send message", variant="primary")
+                clear = gr.Button("Start a new conversation")
+            gr.Examples(
+                examples=[["Where is order ee64d42b8cf066f35eac1cf57de1aa85?"]],
+                inputs=message, label="Try a practice order",
+            )
+        with gr.Column(scale=1, min_width=260, variant="panel"):
+            order_card = gr.Markdown(EMPTY_ORDER)
+            gr.Markdown("---\n### Keep the conversation going\n"
+                        "After checking an order, try:\n\n"
+                        "“I need it for class. What should I do now?”\n\n"
+                        "You don't need to repeat the order number.")
+    gr.Markdown("Practice with historical records. This app can suggest help, "
+                "but cannot change orders or issue refunds.")
 
-st.caption("This app can read records and suggest a next step. It cannot change an order or issue a refund.")
+    # Enter and Send do the same job. Reset uses the same queue to avoid stale replies.
+    gr.on(triggers=[message.submit, send.click], fn=reply,
+          inputs=[message, history], outputs=[message, chat, history, order_card],
+          concurrency_id="conversation", api_name="reply")
+    gr.on(triggers=[clear.click, chat.clear], fn=reset_chat,
+          outputs=[message, chat, history, order_card],
+          concurrency_id="conversation", api_name="reset")
+
+
+if __name__ == "__main__":
+    demo.launch(
+        server_name=os.getenv("GRADIO_SERVER_NAME", "127.0.0.1"), server_port=7860,
+        theme=gr.themes.Soft(primary_hue="teal", neutral_hue="slate"),
+        css=".gradio-container {max-width: 1100px !important;} "
+            "#eyebrow {letter-spacing: .12em; font-size: 12px; color: #0f766e;}",
+        footer_links=[], share=False,
+    )

@@ -1,13 +1,12 @@
 """Maintainer checks: no real API key or external requests are needed."""
 import json
-from pathlib import Path
 from unittest.mock import MagicMock
 
 import httpx
 import pytest
-from streamlit.testing.v1 import AppTest
 
 import agent
+import app
 import tools
 
 ORDER_ID = "a" * 32
@@ -207,17 +206,34 @@ def test_network_failure(services, which):
 
 
 def test_ui_followup_reset_and_missing_order(services):
-    app = AppTest.from_file(str(Path(__file__).parents[1] / "app.py")).run()
-    app.chat_input[0].set_value("Where is order " + ORDER_ID).run()
-    app.chat_input[0].set_value("I need it for class. What now?").run()
-    assert not app.exception
-    assert app.session_state["order"]["order_id"] == ORDER_ID
+    _, chat, history, card = app.reply("Where is order " + ORDER_ID, [])
+    assert "Shipped" in card
+    assert len(chat) == 2
+    _, chat, history, card = app.reply("I need it for class. What now?", history)
+    assert len(chat) == 4
     context = json.loads(services[1].call_args.kwargs["json"]["messages"][1]["content"])
     assert len(context["history"]) == 2
-    app.chat_input[0].set_value("Check " + "c" * 32).run()
-    assert app.session_state["order"] is None
-    app.button[0].click().run()
-    assert not app.session_state["messages"]
-    app.chat_input[0].set_value("What now?").run()
-    assert not app.exception
-    assert "order number" in app.session_state["messages"][-1]["content"]
+    _, _, history, card = app.reply("Check " + "c" * 32, history)
+    assert card == app.EMPTY_ORDER
+    message, chat, history, card = app.reset_chat()
+    assert message == "" and chat == [] and history == []
+    assert card == app.EMPTY_ORDER
+    _, _, history, _ = app.reply("What now?", history)
+    assert "order number" in history[-1]["content"]
+
+
+def test_ui_keeps_visitors_separate():
+    first_history = []
+    _, _, updated, _ = app.reply("Check " + ORDER_ID, first_history)
+    assert first_history == []
+    assert len(updated) == 2
+    _, _, second, _ = app.reply("What now?", [])
+    assert "order number" in second[-1]["content"]
+
+
+def test_empty_ui_message_does_not_call_services(services):
+    _, chat, history, update = app.reply("   ", [])
+    assert chat == [] and history == []
+    assert update == {"__type__": "update"}
+    for call in services:
+        call.assert_not_called()
