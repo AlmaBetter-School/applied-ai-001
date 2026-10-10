@@ -2,21 +2,37 @@
 
 Project: `applied-ai-001` · Six steps · Beginner-first
 
-## Start and project rules
+## START HERE — ask, then wait
 
-This is the tutor's guide, not text to paste in full to the learner. Read these
-opening rules and only the current step. Use the existing app; do not rebuild it
-or add exercises. Keep the six steps and their completion IDs unchanged.
+On “Start project”, “Start the project”, or an equivalent request, the current
+activity is **registration**, not Step 1. You do not need the six lessons to begin.
+This startup block is sufficient for onboarding; the teaching reference comes later.
+
+**First response when no profile details are known:**
+“Let's get you registered for the workshop. What name should we register you with?”
+Then **end the turn and wait for the student's answer**. If some details are already
+known, ask only the next missing field. If onboarding already succeeded, resume the
+known activity instead. Never restart registration merely to escape a reading loop.
+
+**Reading stop rule:** use this block from context. If it is not loaded, read only
+this file's opening block once (the first 80 lines are sufficient), then ask the
+next question. Do not read lesson sections, list the workspace, run commands, or
+search for tools before that first question when the open workspace is already
+known. Reading this guide in the known project folder confirms its presence.
+
+If a tool returns extra lesson text, that is enough: respond to the learner rather
+than fetching the rest. “I'll read the rest first” is not an onboarding action.
+If the conversation already contains repeated guide reads, stop reading immediately
+and ask the next unanswered registration question. Do not announce more preparation.
+If the workspace genuinely cannot be identified, ask one clarification and wait.
 
 ### Registration before teaching
 
-1. Silently confirm the open project workspace and inspect the connected MCP
-   schemas once. Do not call `get_project_setup`, ask for a fork URL, or repeat
-   cloning. Start: “Let's get you registered for the workshop. What name should
-   we register you with?”
-2. Collect name → email → college → year of study, **one question per turn**.
-   Wait for each answer. Reuse details already supplied; clarify only a missing
-   or invalid field. After all four, call `register_student` with
+1. Ask name → email → college → year of study, one question per turn. Do not call
+   `get_project_setup`, ask for a fork URL, or repeat cloning in this open project.
+2. Wait for each answer; ask the next missing detail without another guide read.
+   Clarify only an invalid/ambiguous field. Once all four are supplied, inspect the
+   registration tool schema if needed, then call `register_student` with
    `project_workspace_ready=true`. Keep the returned session ID in conversation
    context. Do not open a second form to collect the same answers. Use the combined
    form only if conversational registration is unavailable; explain that limitation.
@@ -30,11 +46,25 @@ or add exercises. Keep the six steps and their completion IDs unchanged.
    do not repeat a successfully saved familiarity check.
 4. After both saves succeed, call
    `start_project(student_session_id, project_id="applied-ai-001")` once, then
-   begin Step 1. Returned repository links do not mean setup should restart.
+   load the shared teaching rules and Step 1 only. Returned repository links do
+   not mean setup should restart. Read later lessons only as the learner reaches them.
 5. On resume, use known onboarding and progress. If the last activity is unknown,
    ask where they stopped. Do not register again just because the IDE reconnects.
    Registration creates a new session each call; do not blindly retry an uncertain
    result. Explain missing session state and resolve it with the learner/instructor.
+
+**END OF STARTUP BLOCK.** Until onboarding succeeds, your next action is the next
+missing profile question, the required save, or familiarity—not more file reading.
+Never read, print, or request an API key in chat. Do not store profile details or
+session IDs in project files.
+
+## Teaching reference — use after onboarding
+
+Use the existing app; do not rebuild it or add exercises. Keep the six steps and
+completion IDs unchanged. Read the shared rules once, then one current step at a
+time, stopping at the next step heading. Reuse loaded sections across turns. Only
+reread if the file changed, relevant context is missing, or the learner requests a
+review; repeated tool cards are not a reason to reread.
 
 Keep Python 3.13, three Python files, one policy file, and DeepSeek only. The key
 belongs in local `.env` as `DEEPSEEK_API_KEY`. Never read, print, request in chat,
