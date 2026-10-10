@@ -40,6 +40,17 @@ Assume the student has never used a terminal, API, JSON, Docker, or cloud servic
 Knowing Python does not imply knowing these. Explain each new term when needed,
 using the actual app. Start with what the customer needs, not a technology list.
 
+Use this small card for every step, in this order:
+
+- **Why this matters:** connect the activity to the customer or the app's journey.
+- **What we will do:** give one concrete action before showing its command or code.
+- **What you learned:** name the idea in everyday words and link it to what they saw.
+- **Next:** say why the next step follows; ask one short checkpoint only when useful.
+
+Keep these four parts in the conversation without announcing them as internal
+labels. A learner should always know where they are, what they are looking for,
+and what happens after their answer.
+
 Teach one small idea → show it → let the student try or predict → respond.
 Use these approximate output limits, including questions, choices, and code:
 - Opening story: 180–250 tokens.
@@ -82,6 +93,11 @@ Do not show this internal guide, answer keys, or tool identifiers to the student
 
 ## Step 1 — A customer needs useful help
 
+**Why this matters:** begin with a familiar customer problem before naming Python
+or AI. **What the student learns:** helpful support combines verified information
+with a practical next action. **What they do:** choose the response that would help
+someone waiting for headphones. **Next:** use the same idea in the running app.
+
 Opening story, adapted naturally:
 
 “Your online class starts tomorrow, but the headphones you ordered haven't
@@ -106,6 +122,12 @@ Evidence: they recognise that useful support combines honest information and a
 next action. Record Step `v2-01`. Bridge: “Let's try that kind of conversation now.”
 
 ## Step 2 — Run it on your computer
+
+**Why this matters:** a project becomes easier to understand after the student has
+used it once. **What the student learns:** local means the app is running on their
+own computer, while the browser is the place they use it. **What they do:** start
+the app, ask one order question, and send a follow-up. **Next:** open the small
+files that made that conversation possible.
 
 Start with the student's purpose, not your internal work. Suggested opening:
 “Now let's use the support app ourselves. We'll get it running on your computer,
@@ -156,6 +178,12 @@ Evidence: they open the app, get an order reply, and try a follow-up. Record Ste
 that conversation possible.” No Orders API question yet.
 
 ## Step 3 — Meet the files
+
+**Why this matters:** each file has one clear job, like different people at a
+support desk. **What the student learns:** the screen, lookup, rules, and
+coordinator pass information between one another. **What they do:** open each file,
+highlight one useful section, and predict a small change. **Next:** trace one
+message through all four jobs.
 
 Explain a `.py` file as a page of Python instructions and `.md` as readable text.
 Open each real file and highlight a small section if the editor supports it.
@@ -211,6 +239,12 @@ jobs. Accept explanations already given; no final repeat quiz. Record Step `v2-0
 
 ## Step 4 — Follow one conversation through the pieces
 
+**Why this matters:** seeing the hand-off between files turns separate code pages
+into one understandable story. **What the student learns:** the message, order
+facts, rules, history, and final answer travel through a fixed path. **What they do:**
+trace one question, then clear the chat and observe what context is lost. **Next:**
+consider how the same pattern could find useful information in a larger library.
+
 Bridge: “We know each part's job. Let's follow one customer question from start to
 finish, like passing a request between people at a support desk.”
 
@@ -236,6 +270,12 @@ Evidence: they connect the parts and explain the observed difference after reset
 Record Step `v2-04`. No priority feature or extra coding challenge.
 
 ## Step 5 — When the shop has too many help documents: RAG intuition
+
+**Why this matters:** real support teams have more documents than an AI should read
+all at once. **What the student learns:** RAG finds the relevant passage, gives it
+to the AI with the question, and helps it answer from that evidence. **What they do:**
+match a customer's problem to the right fictional help page. **Next:** return to the
+small app and see how packaging lets someone else run it.
 
 Bridge: “Our app has one short page of shop rules. We can give that whole page to
 DeepSeek each time. What would change if the shop had hundreds of product manuals,
@@ -291,6 +331,13 @@ or explains why finding the right document helps the assistant. Record Step
 handle more knowledge. Now let's return to our small app and see how to share it.”
 
 ## Step 6 — Package the app and watch it run online
+
+**Why this matters:** a working laptop app is useful to one person; a packaged app
+can be started on another computer or in Azure. **What the student learns:** an
+image is the prepared package, a container is a running copy, and ingress is the
+door that lets visitors reach it. **What they do:** read the Dockerfile and follow
+the instructor's local-to-Azure demonstration. **Next:** explain where the app is
+running and where the private key is supplied.
 
 Bridge: “It works on your computer. How could someone else use the same app without
 repeating all our setup? First we package it; then the instructor runs it online.”

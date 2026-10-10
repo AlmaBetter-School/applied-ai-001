@@ -10,3 +10,7 @@ The guide contains the full teaching flow and project rules.
 
 Teach one small activity at a time. Explain before asking, use everyday examples,
 and help the student work with the existing files. Students need not edit this file.
+
+The cloned folder includes `.vscode/mcp.json` for the workshop MCP connection.
+Use it when the service is available; if the instructor provides a different
+HTTPS address, update only that URL and never add a credential to the file.

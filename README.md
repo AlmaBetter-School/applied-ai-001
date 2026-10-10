@@ -13,10 +13,15 @@ No previous AI, API, or cloud experience is assumed.
 
 ## Start here
 
-Open your copy of this folder in the workshop IDE and say **“Start project.”**
-Connect the instructor's AlmaBetter MCP service for registration and progress.
-The guide takes you through registration and skill familiarity before the story.
-You do not need to study the guide files or install everything on your own first.
+Open your copy of this folder in VS Code. The included `.vscode/mcp.json` already
+points VS Code at the local AlmaBetter MCP service used in the workshop. Make sure
+that service is running, trust the connection if VS Code asks, and then say
+**“Start project.”** The guide begins with registration and skill familiarity,
+then introduces the customer story before asking you to run anything.
+
+If your instructor gives you a shared HTTPS MCP address, edit only the `url` in
+`.vscode/mcp.json`; never put an API key in that file. You do not need to study
+the guide files or install everything before registration.
 
 | Step | What you do |
 |---|---|
@@ -26,6 +31,10 @@ You do not need to study the guide files or install everything on your own first
 | 4 | Follow one question through the whole app |
 | 5 | Understand how RAG helps an assistant find useful help documents |
 | 6 | Understand Docker and watch the instructor's Azure demonstration |
+
+Every step follows the same simple rhythm: understand why the step matters, do
+one small activity, explain what you noticed, and then move to the next step.
+The tutor will pause at a practical checkpoint instead of giving a long quiz.
 
 The RAG activity is a short, guided example: find the relevant help passage, give
 it to the AI, then explain the answer. It adds no code or packages; the app still
