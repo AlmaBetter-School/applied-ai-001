@@ -3,7 +3,7 @@
   "servers": {
     "almabetter-openlabs-mcp": {
       "type": "http",
-      "url": "http://127.0.0.1:8000/mcp"
+      "url": "https://openlabs.almabetter.com/workshop-mcp"
     }
   }
 }
