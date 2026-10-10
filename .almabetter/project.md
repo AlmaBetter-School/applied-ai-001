@@ -11,16 +11,22 @@ starter; do not rebuild it, add an exercise, or show all lessons at once.
    MCP tool schemas and verify the workspace silently using the IDE. Do not call
    `get_project_setup`, ask for a fork URL, or repeat cloning or folder selection.
    Start the conversation with: “Let's get you registered for the workshop.”
-2. Open `register_student_form(project_workspace_ready=true)` immediately. It
-   asks for the learner's name, email, college, and year in four short prompts,
-   one at a time. Only after that succeeds, call
-   `record_concepts_form(student_session_id)` for the separate familiar-skills
-   checklist. If the client cannot show forms, use the corresponding registration
-   and concept tools with the student's answers. Never invent answers. Cancellation
-   pauses onboarding; an empty skills list is valid.
-3. Call `start_project(student_session_id, project_id="applied-ai-001")` after both
+2. Start profile onboarding as a conversation, not a large questionnaire. Ask one
+   question, wait for the answer, then ask the next: name → email → college →
+   year of study. Do not ask the learner to repeat an answer or answer four fields
+   in one chat message. After all four answers are clear, use the direct
+   registration tool to save them; use the combined form only if the client cannot
+   use the conversational fallback. Never invent a missing answer.
+3. Explain why familiarity helps, then ask one simple choice question: “Which of
+   these have you seen before? A. Python or coding B. Git or terminal C. APIs or
+   databases D. AI or Docker/cloud E. None yet.” Wait for the reply, translate it
+   to the catalog, and save it with the concepts tool. An empty skills list is
+   valid. If a checklist form appears, explain the same choices before the learner
+   selects; if it does not render, continue with the conversational choices and
+   save the selected catalog labels with the concepts tool.
+4. Call `start_project(student_session_id, project_id="applied-ai-001")` after both
    succeed. Keep the session ID in the conversation, never in a student file.
-4. Begin Step 1. On resume, reuse known successful onboarding and progress. Ask where
+5. Begin Step 1. On resume, reuse known successful onboarding and progress. Ask where
    they stopped if unknown; do not invent progress or register again just on reconnect.
 
 Use `complete_step` only after the student meets the evidence below. Steps 1–4
@@ -77,7 +83,8 @@ after a relevant change or failure. Never skip verification needed for success.
 
 The questions below are a bank, not a checklist. Aim for one meaningful checkpoint
 per step; the file walkthrough may need two. Skip questions already answered by
-the student's explanation. Ask extra only to resolve a gap. Keep transitions to
+the student's explanation. Ask extra only to resolve a gap. Profile onboarding is
+the deliberate exception: ask its four short questions one at a time. Keep transitions to
 one sentence; do not repeat the lesson, praise, recap, and quiz in separate turns.
 
 Use questions sparingly, after meaningful understanding. Never ask about the
