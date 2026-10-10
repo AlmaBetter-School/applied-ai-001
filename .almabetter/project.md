@@ -4,6 +4,12 @@ Project: `applied-ai-001` · Six steps · Beginner-first
 
 ## START HERE — ask, then wait
 
+**Workshop entry sequence:** open VS Code → fork the instructor's GitHub link →
+clone that fork to Desktop → open the cloned folder → say “Start project” in the
+IDE chat. These are preparation actions, not extra learning steps. By the time
+this guide is read in the open folder, they are already done; do not repeat them.
+The first guided interaction is registration, not MCP connection setup.
+
 On “Start project”, “Start the project”, or an equivalent request, the current
 activity is **registration**, not Step 1. You do not need the six lessons to begin.
 This startup block is sufficient for onboarding; the teaching reference comes later.
@@ -36,6 +42,11 @@ If the workspace genuinely cannot be identified, ask one clarification and wait.
    `project_workspace_ready=true`. Keep the returned session ID in conversation
    context. Do not open a second form to collect the same answers. Use the combined
    form only if conversational registration is unavailable; explain that limitation.
+   The workshop MCP address is already in `.vscode/mcp.json`; do not ask the student
+   to add it before starting. If saving needs connection/permission help, explain
+   “The workshop connection needs attention before I can save your registration.”
+   Help with the actual VS Code prompt or server error, preserving answers already
+   given. Respect denied approval; never claim an unsaved registration succeeded.
 3. Ask familiarity separately: “I'll adjust the explanations to what you've seen.
    Which fits you? A. I'm starting fresh. B. I've used Python. C. I've tried other
    tools—I'll name them. Choose B and C if both fit; this isn't a test.”

@@ -13,15 +13,27 @@ No previous AI, API, or cloud experience is assumed.
 
 ## Start here
 
-Open your copy of this folder in VS Code. The included `.vscode/mcp.json` already
-points VS Code at the hosted AlmaBetter workshop service. Trust the connection if
-VS Code asks, then say **“Start project.”** The guide begins with registration and
-skill familiarity. Profile details are collected one at a time, then the guide
-introduces the customer problem before asking you to run anything.
+1. **Open VS Code.** This is where you will open the project and chat with your guide.
+2. **Fork the workshop repository.** Open the GitHub link shared by the instructor
+   ([applied-ai-001](https://github.com/AlmaBetter-School/applied-ai-001)), sign in,
+   and choose **Fork**. This creates your own copy on GitHub.
+3. **Clone your fork to Desktop.** Copy the HTTPS URL from your fork's **Code**
+   button. In VS Code, use **Clone Repository**, paste that URL, and select
+   **Desktop** as the destination. Cloning downloads the files onto your computer.
+4. **Open the cloned folder and start.** Open `Desktop/applied-ai-001` in VS Code.
+   In the coding assistant's chat, say **“Start project.”** This is a chat message,
+   not a terminal command. The guide asks for your name, then collects the remaining
+   registration details one at a time.
 
-If your instructor gives you a different MCP address, edit only the `url` in
-`.vscode/mcp.json`; never put an API key in that file. You do not need to study
-the guide files or install everything before registration.
+Next comes skill familiarity, the customer problem, and the six learning steps
+below. If the folder is already open, start from step 4; do not fork or clone again.
+
+The workshop connection is included in `.vscode/mcp.json`; students do not add an
+MCP endpoint before starting. If VS Code shows a workspace or tool permission
+prompt, handle it with the instructor when it appears. If registration cannot be
+saved, the guide helps restore that connection and resumes the same activity.
+You do not need to study the guide files, add the DeepSeek key, or install the app
+before registration. Local app setup comes in learning Step 2.
 
 | Step | What you do |
 |---|---|
