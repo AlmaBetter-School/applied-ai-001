@@ -14,3 +14,8 @@ and help the student work with the existing files. Students need not edit this f
 The cloned folder includes `.vscode/mcp.json` for the hosted workshop MCP
 connection. If the instructor provides a different address, update only that URL
 and never add a credential to the file.
+
+After registration, explain the problem statement and ask one practical question
+before setup. Ask the learner's operating system before giving any terminal
+command. Guide environment, key, app start, browser link, file walkthrough, and
+Docker/Azure demonstration in that order.

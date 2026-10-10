@@ -16,8 +16,8 @@ No previous AI, API, or cloud experience is assumed.
 Open your copy of this folder in VS Code. The included `.vscode/mcp.json` already
 points VS Code at the hosted AlmaBetter workshop service. Trust the connection if
 VS Code asks, then say **“Start project.”** The guide begins with registration and
-skill familiarity, then introduces the customer story before asking you to run
-anything.
+skill familiarity. Profile details are collected one at a time, then the guide
+introduces the customer problem before asking you to run anything.
 
 If your instructor gives you a different MCP address, edit only the `url` in
 `.vscode/mcp.json`; never put an API key in that file. You do not need to study
@@ -58,7 +58,8 @@ follow the conversation, not those internal instructions. `tests/` is for mainta
 
 ## Local setup reference
 
-Your guide explains each command before you run it. Use Python 3.13.
+Your guide first asks whether you use macOS/Linux or Windows, then explains each
+matching command before you run it. Use Python 3.13.
 
 **macOS / Linux**
 

@@ -11,10 +11,13 @@ starter; do not rebuild it, add an exercise, or show all lessons at once.
    MCP tool schemas and verify the workspace silently using the IDE. Do not call
    `get_project_setup`, ask for a fork URL, or repeat cloning or folder selection.
    Start the conversation with: “Let's get you registered for the workshop.”
-2. Open `register_student_form(project_workspace_ready=true)` immediately, then
-   `record_concepts_form(student_session_id)`. If the client cannot show forms,
-   use the corresponding registration and concept tools with the student's answers.
-   Never invent answers. Cancellation pauses onboarding; an empty skills list is valid.
+2. Open `register_student_form(project_workspace_ready=true)` immediately. It
+   asks for the learner's name, email, college, and year in four short prompts,
+   one at a time. Only after that succeeds, call
+   `record_concepts_form(student_session_id)` for the separate familiar-skills
+   checklist. If the client cannot show forms, use the corresponding registration
+   and concept tools with the student's answers. Never invent answers. Cancellation
+   pauses onboarding; an empty skills list is valid.
 3. Call `start_project(student_session_id, project_id="applied-ai-001")` after both
    succeed. Keep the session ID in the conversation, never in a student file.
 4. Begin Step 1. On resume, reuse known successful onboarding and progress. Ask where
@@ -103,7 +106,14 @@ or AI. **What the student learns:** helpful support combines verified informatio
 with a practical next action. **What they do:** choose the response that would help
 someone waiting for headphones. **Next:** use the same idea in the running app.
 
-Opening story, adapted naturally:
+Start by naming the **problem statement** in everyday language:
+
+“An online shop receives many delivery questions. Customers do not want a vague
+promise; they want the recorded facts and a sensible next action. We are going to
+build a small support assistant that checks an order, follows the shop's rules,
+and explains what the customer can do. It cannot move a parcel or issue a refund.”
+
+Then use this relatable story:
 
 “Your online class starts tomorrow, but the headphones you ordered haven't
 arrived. You message the shop. A friendly ‘Don't worry!’ doesn't tell you what
@@ -116,15 +126,17 @@ AI helps choose a response. It cannot move the parcel or issue a refund.
 We'll try the app, explore its few files, and watch the instructor share it online.
 You don't need to understand the code yet.”
 
-Invite one everyday judgement: “If you were waiting for those headphones, which
-reply would help you decide what to do? A. ‘It will definitely arrive tomorrow.’
-B. ‘Here is the recorded status and who can help next.’ C. I'm not sure yet.”
+Ask one interesting question that makes the problem concrete: “If you were waiting
+for those headphones, which reply would help you decide what to do? A. ‘It will
+definitely arrive tomorrow.’ B. ‘Here is the recorded status and who can help
+next.’ C. I'm not sure yet.”
 If A, explain why an unsupported promise could leave them without headphones for
 class; contrast reassurance with information they can act on. Then give a simpler
 choice about honest help. Do not ask what an API is or where to find order data.
 
 Evidence: they recognise that useful support combines honest information and a
-next action. Record Step `v2-01`. Bridge: “Let's try that kind of conversation now.”
+next action. Record Step `v2-01`. Bridge: “Now we will make this small project live
+on your computer and try the same support conversation ourselves.”
 
 ## Step 2 — Run it on your computer
 
@@ -146,6 +158,10 @@ the chat: ‘Where is order ee64d42b8cf066f35eac1cf57de1aa85?’” If its state
 ask whether they see the app, an error, or have not started it. Do not claim it is
 running without evidence, repeat completed setup, or jump ahead of the key setup.
 
+Before any command, ask which operating system they are using: “Which computer are
+you on? A. macOS or Linux. B. Windows. C. I am not sure.” Wait for the answer and
+use only that system's commands. Do not ask them to choose commands by guessing.
+
 Read teaching instructions as needed without announcing “reading Step 2”, file
 line ranges, or “finding a valid order ID”. Use the supplied example below first;
 do not search the dataset or list project files to find an ID. Use the IDE's known
@@ -159,16 +175,19 @@ Explain “local” as running on their own computer. The terminal is where we t
 commands; the browser is where we use the app. The editor holds the code.
 Ask their operating system if unknown. Follow README's commands one at a time.
 
-A. Confirm Python 3.13 and the project folder. Explain `.venv` as a separate box
-for this project's installed packages; create it with the OS-appropriate command.
-B. Explain `requirements.txt` as the package list; install it. Wait for the result.
+A. Confirm the project folder and Python 3.13. Explain `.venv` as a separate box
+for this project's installed packages; create it with the command for their OS.
+B. Explain `requirements.txt` as the package list; install it. Wait for the result
+before moving on.
 C. Copy `.env.example` to `.env` only if absent. Explain a key as the private access
 credential the app uses to contact DeepSeek. Guide pasting the provided key directly
 into that file. If they need their own, guide the DeepSeek platform's API keys page.
 Do not request the key in chat or display the file. No provider or URL choices.
-D. Run `app.py` with the virtual environment's Python; Gradio opens the web app. Explain the terminal stays
-running while the app is open. Open its printed local link. Do not use Deploy.
-E. Copy this complete example: “Where is order ee64d42b8cf066f35eac1cf57de1aa85?”
+D. Run `app.py` with the virtual environment's Python. Explain that Gradio is the
+small web screen and that the terminal stays running while it serves the screen.
+E. Show the local link printed by Gradio, usually `http://localhost:7860`, and ask
+the student to open it in a browser. Do not use a Deploy button.
+F. Copy this complete example: “Where is order ee64d42b8cf066f35eac1cf57de1aa85?”
 Then try “I need it for class. What should I do now?” Explain that the sample records
 are old; this is a practice parcel, not a live delivery. Let them notice that the
 conversation continues without typing the long order number again.
@@ -178,7 +197,8 @@ C. I need help finding the terminal.” Tailor choices to the current action. He
 with the error rather than turning it into a quiz. Missing key, rejected key,
 insufficient balance, rate limits, or unreachable services are not completed runs.
 
-Evidence: they open the app, get an order reply, and try a follow-up. Record Step
+Evidence: they create the environment, add the key privately, start the app, open
+the printed browser link, get an order reply, and try a follow-up. Record Step
 `v2-02`. Bridge: “You've used it as a customer. Now let's see the small parts that made
 that conversation possible.” No Orders API question yet.
 
@@ -191,6 +211,10 @@ highlight one useful section, and predict a small change. **Next:** trace one
 message through all four jobs.
 
 Explain a `.py` file as a page of Python instructions and `.md` as readable text.
+Introduce the four files as a support desk: `app.py` is the front desk, `tools.py`
+is the records desk, `policy.md` is the rulebook, and `agent.py` is the coordinator
+who passes the request between them. The student should leave this step able to
+say what each file receives and returns, not recite Python syntax.
 Open each real file and highlight a small section if the editor supports it.
 Otherwise show the exact line range and a short excerpt. Verify editor actions;
 never claim to open or highlight a file without tool support. Explain inputs and
@@ -344,8 +368,14 @@ door that lets visitors reach it. **What they do:** read the Dockerfile and foll
 the instructor's local-to-Azure demonstration. **Next:** explain where the app is
 running and where the private key is supplied.
 
-Bridge: “It works on your computer. How could someone else use the same app without
-repeating all our setup? First we package it; then the instructor runs it online.”
+Bridge: “All four files now have a job and one request can travel through them. The
+instructor will show how the same app moves from your computer to the web.”
+
+Explain the deployment story in this order: the **Dockerfile** is the recipe, a
+Docker **image** is the prepared package, a **container** is one running copy of
+that package, and an **Azure Container App** is the managed place that keeps the
+container available. Only after those ideas are clear should the instructor build,
+upload, configure the secret and port, and open the public link.
 
 Explain image as the prepared app package; container as a running copy. Open the
 actual `Dockerfile`, highlighting one group at a time:
