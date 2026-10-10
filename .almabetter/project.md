@@ -37,6 +37,11 @@ The v2 IDs keep new completions separate from the former eight-step lesson. For 
 explain the change and check what the student actually did; old step numbers alone
 must not be treated as completion of these revised activities.
 
+When `complete_step` succeeds, treat that checkpoint as finished. Do not repeat
+the same explanation, answer, or question because a progress card appeared.
+Briefly connect the completed idea to the next step and continue. A tool card such
+as “Save project progress” is a record of the learner's progress, not a new lesson.
+
 Keep Python 3.13, three Python files, one policy file, and DeepSeek only. Use
 `DEEPSEEK_API_KEY` from local `.env`. Never read, print, request in chat, or commit
 its value. Do not save registration details or conversations in files or logs.
@@ -120,6 +125,13 @@ promise; they want the recorded facts and a sensible next action. We are going t
 build a small support assistant that checks an order, follows the shop's rules,
 and explains what the customer can do. It cannot move a parcel or issue a refund.”
 
+Make the human and automated roles clear: “A support person listens, checks the
+trusted order record, applies the shop's rules, and explains the options. They
+send unusual cases to the right team instead of inventing an answer. Our automated
+system should repeat the routine checks quickly, show the facts it found, remember
+the conversation while we are chatting, and suggest a safe next action. It must
+not promise delivery, change an order, or approve a refund by itself.”
+
 Then use this relatable story:
 
 “Your online class starts tomorrow, but the headphones you ordered haven't
@@ -201,8 +213,24 @@ conversation continues without typing the long order number again.
 
 At setup pauses use “What do you see? A. The app is open. B. An error message.
 C. I need help finding the terminal.” Tailor choices to the current action. Help
-with the error rather than turning it into a quiz. Missing key, rejected key,
-insufficient balance, rate limits, or unreachable services are not completed runs.
+with the error rather than turning it into a quiz. If the message says that port
+7860 is already in use, first ask whether an earlier copy of the app is already
+open and reuse that browser link or stop the earlier run. If they need both copies,
+run this one on another port and open the matching link:
+
+```sh
+GRADIO_SERVER_PORT=7861 .venv/bin/python app.py
+```
+
+On Windows PowerShell, use `$env:GRADIO_SERVER_PORT=7861` before starting the app.
+If the tutor or model reports a temporary `502`, `net::ERR_FAILED`, or “failed to
+get a response”, explain that the model connection did not answer. Ask the learner
+to check internet or firewall access and retry once; do not restart registration,
+repeat Step 1, or mark the app run complete until a reply is visible. Do not show
+the client request ID as a lesson or ask the learner to paste a secret.
+
+Missing key, rejected key, insufficient balance, rate limits, or an unreachable
+Orders service are not completed runs.
 
 Evidence: they create the environment, add the key privately, start the app, open
 the printed browser link, get an order reply, and try a follow-up. Record Step

@@ -76,7 +76,8 @@ with gr.Blocks(title="Order Support", analytics_enabled=False) as demo:
 
 if __name__ == "__main__":
     demo.launch(
-        server_name=os.getenv("GRADIO_SERVER_NAME", "127.0.0.1"), server_port=7860,
+        server_name=os.getenv("GRADIO_SERVER_NAME", "127.0.0.1"),
+        server_port=int(os.getenv("GRADIO_SERVER_PORT", "7860")),
         theme=gr.themes.Base(primary_hue="red", neutral_hue="zinc",
                              font=["Arial", "sans-serif"]),
         css="""
